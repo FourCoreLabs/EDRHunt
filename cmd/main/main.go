@@ -10,12 +10,13 @@ import (
 )
 
 var (
-	drivers   bool
-	processes bool
-	services  bool
-	registry  bool
-	all       bool
-	version   bool
+	drivers      bool
+	processes    bool
+	services     bool
+	registry     bool
+	all          bool
+	version      string
+	versionCheck bool
 )
 
 func init() {
@@ -24,7 +25,7 @@ func init() {
 	rootCmd.PersistentFlags().BoolVarP(&services, "services", "s", services, "Scan installed services")
 	rootCmd.PersistentFlags().BoolVarP(&registry, "registry", "r", registry, "Scan installed registry")
 	rootCmd.PersistentFlags().BoolVarP(&all, "all", "a", all, "runs all scans: drivers, processes, services, registry.")
-	rootCmd.PersistentFlags().BoolVarP(&version, "version", "v", version, "Output version information and exit")
+	rootCmd.PersistentFlags().BoolVarP(&versionCheck, "version", "v", versionCheck, "Output version information and exit")
 }
 
 var rootCmd = &cobra.Command{
@@ -33,7 +34,7 @@ var rootCmd = &cobra.Command{
 	Long:  `edrRecon scans and finds the installed EDR/AV by scanning services, processes, registry, and drivers.`,
 	Run: func(cmd *cobra.Command, args []string) {
 
-		if version {
+		if versionCheck {
 			fmt.Printf("edrRecon version: beta-release-v.1\n")
 			return
 		}
