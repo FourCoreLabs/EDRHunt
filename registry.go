@@ -77,7 +77,7 @@ func EnumRegistry() []string {
 func (edr *EdrHunt) CheckRegistry() (string, error) {
 	output := strings.Join(EnumRegistry(), " ")
 	var matches []string
-	matches = append(matches, "Scanning Registry. Potential Matches:")
+	matches = append(matches, "Scanning Registry:")
 	if output != "" {
 		processedOutput := strings.ToLower(output)
 
@@ -85,12 +85,12 @@ func (edr *EdrHunt) CheckRegistry() (string, error) {
 			if strings.Contains(
 				processedOutput,
 				strings.ToLower(match)) {
-				matches = append(matches, fmt.Sprintf("\n%s", match))
+				matches = append(matches, fmt.Sprintf("\n\t%s", match))
 			}
 		}
 	}
 	if cap(matches) > 1 {
-		return fmt.Sprint(matches), nil
+		return fmt.Sprint(strings.Join(matches, "")), nil
 	}
 	return "", fmt.Errorf("nothing found in registry")
 }

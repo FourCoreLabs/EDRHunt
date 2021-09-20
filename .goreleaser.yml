@@ -5,3 +5,5 @@ builds:
     goarch:
       - amd64
     main: ./cmd/main/main.go
+archives:
+  format: zip
