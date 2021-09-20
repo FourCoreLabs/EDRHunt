@@ -1,0 +1,7 @@
+builds:
+  - binary: edrRecon
+    goos:
+      - windows
+    goarch:
+      - amd64
+    main: ./cmd/main
