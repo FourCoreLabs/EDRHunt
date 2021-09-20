@@ -6,4 +6,5 @@ builds:
       - amd64
     main: ./cmd/main/main.go
 archives:
-  format: zip
+  -
+    format: zip
