@@ -5,9 +5,10 @@ import (
 )
 
 var (
-	EdrList           = []string{}
-	RegistryReconList = []string{}
-	key               = []byte("obscurityisablessing")
+	EdrList            = []string{}
+	RegistryReconList  = []string{}
+	RegistrySearchList = []string{}
+	key                = []byte("obscurityisablessing")
 )
 
 var obfEdrList = []string{
@@ -138,6 +139,24 @@ var obfRegistryReconList = []string{
 	"3c071d101a003f110b1a1a0e0c",
 }
 
+var obfRegistrySearchList = []string{
+	"1d07144304070c06004951292920282f20303d332a2f2f2000001b11171d300e0c18171c1f3a0b1333311611031b0a110a3527021205152f23081c060207070607014b",
+	"1d07144304070c06004951292920282f3b283c233823212629362c273a3b3a3136252a3d2f3a17141b071e3f373b26275b",
+	"1d07144304070c0600493b2a2e2139203c2f3a302e30363f381b0a06161a1c071630321a1d0d01101c3e301607000c1a0d3f161311050a1d2f3c000e01110702191e",
+	"1d07144304070c0600493b2a2e2139203c2f3a302e30363f381b0a06161a1c071630321a1d0d01101c3e301607000c1a0d3f161311050a1d2f39010b06011a06062e3a0d0a1d160c",
+	"1d07144304070c060049512929293c2c3f262d26233d3e22363a203a3c3520383138203e2f2a1b151d071d17361d07000b061f32071839301c071a15000e2f2f26334b",
+	"1d07144304070c06004951292920282f200608131803010629220618100a1a041130281a101b01140004073f221b0710161e003d2609131a100c29120e101741",
+	"1d07144304070c060049512929293c2c3f262d26233d3e22363a203a3c35202e24383232212c322a0601010c061d0f00253e1a0f06031200532d0b010a0c1706072e3b1118055e350b010053231b01130a01070a1a1c4b",
+	"1d07144304070c060049512929293c2c3f262d26233d3e22363a203a3c35202e24383232212c322a0601010c061d0f00253e1a0f0603120053280a110e0c100611523d1c0b0c1215423c171c070c0d13060d1d3f260608000c1a51",
+	"1d07144304070c0600493b2a2e2139201c0f1a100e10163f381128121c0c2f240c08151c1a071a3b2e34",
+	"1d07144304070c0600493b2a2e2139201c0f1a100e10163f260b0415171d1602",
+	"1d07144304070c0600493b2a2e2139201c0f1a100e10163f360b0515170a163d2609161807061e",
+	"1d07144304070c0600493b2a2e2139201c0f1a100e10163f36102d111f0c1d1207",
+	"1d07144304070c0600493b2a2e2139201c0f1a100e10163f360006031d3a07130b07002f3a0708230d",
+	"1d07144304070c06004951292920282f200608131803010629210c1a0d001d040e4c2912111a4c",
+	"1d07144304070c06004951292920282f200608131803010629210c1a0d001d040e4c2912111a322608071d1757",
+}
+
 func init() {
 	for _, index := range obfEdrList {
 		deHex, _ := hex.DecodeString(index)
@@ -149,6 +168,11 @@ func init() {
 		decoded := xorObf(deHex, key)
 		RegistryReconList = append(RegistryReconList, string(decoded))
 	}
+	for _, index := range obfRegistrySearchList {
+		deHex, _ := hex.DecodeString(index)
+		decoded := xorObf(deHex, key)
+		RegistrySearchList = append(RegistrySearchList, string(decoded))
+	}
 }
 
 func xorObf(input, key []byte) []byte {
@@ -159,3 +183,222 @@ func xorObf(input, key []byte) []byte {
 	}
 	return ret
 }
+
+//Edrlist is a list of edrs.
+// var EdrList = []string{
+// 	"activeconsole",
+// 	"amsi.dll",
+// 	"anti malware",
+// 	"anti-malware",
+// 	"antimalware",
+// 	"anti virus",
+// 	"anti-virus",
+// 	"antivirus",
+// 	"appsense",
+// 	"authtap",
+// 	"avast",
+// 	"avecto",
+// 	"canary",
+// 	"carbonblack",
+// 	"carbon black",
+// 	"cb.exe",
+// 	"ciscoamp",
+// 	"cisco amp",
+// 	"countercept",
+// 	"countertack",
+// 	"cramtray",
+// 	"crssvc",
+// 	"crowdstrike",
+// 	"csagent",
+// 	"csfalcon",
+// 	"csshell",
+// 	"cybereason",
+// 	"cyclorama",
+// 	"cylance",
+// 	"cyoptics",
+// 	"cyupdate",
+// 	"cyvera",
+// 	"cyserver",
+// 	"cytray",
+// 	"darktrace",
+// 	"defendpoint",
+// 	"defender",
+// 	"eectrl",
+// 	"elastic",
+// 	"endgame",
+// 	"f-secure",
+// 	"forcepoint",
+// 	"fireeye",
+// 	"groundling",
+// 	"GRRservic",
+// 	"inspector",
+// 	"ivanti",
+// 	"kaspersky",
+// 	"lacuna",
+// 	"logrhythm",
+// 	"malware",
+// 	"mandiant",
+// 	"mcafee",
+// 	"morphisec",
+// 	"msascuil",
+// 	"msmpeng",
+// 	"nissrv",
+// 	"omni",
+// 	"omniagent",
+// 	"osquery",
+// 	"Palo Alto Networks",
+// 	"pgeposervice",
+// 	"pgsystemtray",
+// 	"privilegeguard",
+// 	"procwall",
+// 	"protectorservic",
+// 	"qradar",
+// 	"redcloak",
+// 	"secureworks",
+// 	"securityhealthservice",
+// 	"semlaunchsv",
+// 	"sentinel",
+// 	"sepliveupdat",
+// 	"sisidsservice",
+// 	"sisipsservice",
+// 	"sisipsutil",
+// 	"smc.exe",
+// 	"smcgui",
+// 	"snac64",
+// 	"sophos",
+// 	"splunk",
+// 	"srtsp",
+// 	"symantec",
+// 	"symcorpu",
+// 	"symefasi",
+// 	"sysinternal",
+// 	"sysmon",
+// 	"tanium",
+// 	"tda.exe",
+// 	"tdawork",
+// 	"tpython",
+// 	"vectra",
+// 	"wincollect",
+// 	"windowssensor",
+// 	"wireshark",
+// 	"threat",
+// 	"xagt.exe",
+// 	"xagtnotif.exe",
+// }
+
+// var ReconList = []string{
+// 	"ProductName",
+// 	"CSDVersion",
+// 	"CurrentVersion",
+// 	"CurrentBuild",
+// 	"SystemRoot",
+// 	"RegisteredOrganization",
+// 	"Domain",
+// 	"DhcpNameServer",
+// 	"DhcpDomain",
+// 	"SystemManufacturer",
+// 	"SystemProductName",
+// 	"LocalAccountTokenFilterPolicy",
+// 	"LsaCfgFlags",
+// }
+
+// var McafeeList = []string{
+// 	"Mcafee\\",
+// 	"McAfeeAgent\\",
+// 	"APPolicyName",
+// 	"EPPolicyName",
+// 	"OASPolicyName",
+// }
+
+// var SymantecList = []string{
+// 	"Symantec",
+// 	"Symantec Endpoint Protection\\",
+// }
+
+// var WinDefender = []string{
+// 	"Windows Defender",
+// 	"DpaDisabled",
+// 	"DisableRealTimeMonitoring",
+// }
+
+// var WinDefenderATP = []string{}
+
+// var CarbonBlack = []string{
+// 	"CarbonBlack\\",
+// 	"CbDefense\\",
+// 	"SensorVersion",
+// }
+
+// var CrowdStrike = []string{
+// 	"CrowdStrike\\",
+// 	"%SYSTEMROOT%\\system32\\drivers\\crowdstrike\\CsDeviceControl.inf",
+// 	"%SYSTEMROOT%\\system32\\drivers\\crowdstrike\\CsFirmwareAnalysis.inf",
+// }
+
+// var Cylance = []string{
+// 	"Cylance\\",
+// 	"Cylance0",
+// 	"Cylance1",
+// 	"Cylance2",
+// }
+
+// var FireEye = []string{
+// 	"FireEye",
+// }
+
+// var SentinelOne = []string{
+// 	"Sentinel Labs\\",
+// 	"Sentinel Agent\\",
+// 	"externalID",
+// }
+
+// var RegistryReconList = []string{
+// 	"Sentinel Labs\\",
+// 	"Sentinel Agent\\",
+// 	"externalID",
+// 	"FireEye",
+// 	"Cylance\\",
+// 	"Cylance0",
+// 	"Cylance1",
+// 	"Cylance2",
+// 	"CrowdStrike\\",
+// 	"%SYSTEMROOT%\\system32\\drivers\\crowdstrike\\CsDeviceControl.inf",
+// 	"%SYSTEMROOT%\\system32\\drivers\\crowdstrike\\CsFirmwareAnalysis.inf",
+// 	"Mcafee\\",
+// 	"McAfeeAgent\\",
+// 	"APPolicyName",
+// 	"EPPolicyName",
+// 	"OASPolicyName",
+// 	"Symantec",
+// 	"Symantec Endpoint Protection\\",
+// 	"Windows Defender",
+// 	"DpaDisabled",
+// 	"DisableRealTimeMonitoring",
+// 	"CarbonBlack\\",
+// 	"CbDefense\\",
+// 	"SensorVersion",
+// }
+
+// var RegistrySearchList = []string{
+// 	`reg query "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters"`,
+// 	`reg query "HKLM\HARDWARE\DESCRIPTION\System\BIOS"`,
+// 	`reg query HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall`,
+// 	`reg query HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System`,
+// 	`reg query "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\LSA"`,
+// 	`reg query "HKLM\Software\Policies\Microsoft\Windows\DeviceGuard"`,
+// 	`reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Real-Time Protection"`,
+// 	`reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Advanced Threat Protection\Status"`,
+// 	`reg query HKLM\Software\McAfee\Endpoint\AV`,
+// 	`reg query HKLM\Software\Symantec`,
+// 	`reg query HKLM\Software\Cylance\Desktop`,
+// 	`reg query HKLM\Software\CbDefense`,
+// 	`reg query HKLM\Software\CrowdStrike\InfDb`,
+// 	`reg query "HKLM\Software\Sentinel Labs"`,
+// 	`reg query "HKLM\Software\Sentinel Labs\Agent"`,
+// }
+
+//encoder
+// for _, index := range EdrList {
+// input := []byte(index)
+// encoded := hex.EncodeToString(xorObf(input, key))
+// ObfEdrList = append(ObfEdrList, fmt.Sprintf("\"%s\",\n", encoded))

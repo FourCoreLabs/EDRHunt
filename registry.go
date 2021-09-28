@@ -9,6 +9,12 @@ import (
 	"syscall"
 )
 
+var (
+	outputLock sync.Mutex
+	paramWg    sync.WaitGroup
+	output     []string
+)
+
 func runCMDCommand(ctx context.Context, command string) ([]byte, error) {
 	params := []string{"/c", command}
 	cmd, err := makeCmd(ctx, params...)
@@ -34,28 +40,8 @@ func makeCmd(ctx context.Context, param ...string) (*exec.Cmd, error) {
 }
 
 func EnumRegistry() []string {
-	var outputLock sync.Mutex
-	var paramWg sync.WaitGroup
-	var params, output []string
-	params = append(params,
-		`reg query "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters"`,
-		`reg query "HKLM\HARDWARE\DESCRIPTION\System\BIOS"`,
-		`reg query HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall`,
-		`reg query HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System`,
-		`reg query "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\LSA"`,
-		`reg query "HKLM\Software\Policies\Microsoft\Windows\DeviceGuard"`,
-		`reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Real-Time Protection"`,
-		`reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Advanced Threat Protection\Status"`,
-		`reg query HKLM\Software\McAfee\Endpoint\AV`,
-		`reg query HKLM\Software\Symantec`,
-		`reg query HKLM\Software\Cylance\Desktop`,
-		`reg query HKLM\Software\CbDefense`,
-		`reg query HKLM\Software\CrowdStrike\InfDb`,
-		`reg query "HKLM\Software\Sentinel Labs"`,
-		`reg query "HKLM\Software\Sentinel Labs\Agent"`)
-
 	ctx := context.Background()
-	for x := range params {
+	for _, x := range RegistrySearchList {
 		paramWg.Add(1)
 		go func(args string) {
 			defer paramWg.Done()
@@ -68,7 +54,7 @@ func EnumRegistry() []string {
 			if len(stdout) != 0 {
 				output = append(output, string(stdout))
 			}
-		}(params[x])
+		}(x)
 	}
 	paramWg.Wait()
 	return output
