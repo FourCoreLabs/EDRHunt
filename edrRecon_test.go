@@ -62,3 +62,12 @@ func TestCheckIfAdmin(t *testing.T) {
 		t.Error(status)
 	}
 }
+
+func TestDeObfNames(t *testing.T) {
+	for _, name := range EdrList {
+		fmt.Println(name)
+	}
+	for _, name := range RegistryReconList {
+		fmt.Println(name)
+	}
+}
