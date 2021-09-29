@@ -13,7 +13,6 @@ func CheckIfAdmin() bool {
 	return true
 }
 
-// can add autoElevate if required.
 // func ElevateAdmin() error {
 // 	verb := "runas"
 // 	exe, _ := os.Executable()

@@ -60,23 +60,23 @@ func EnumRegistry() []string {
 	return output
 }
 
-func (edr *EdrHunt) CheckRegistry() (string, error) {
+func (edr *EdrHunt) CheckRegistry() (RegistryMetaData, error) {
+
 	output := strings.Join(EnumRegistry(), " ")
-	var matches []string
-	matches = append(matches, "Scanning Registry:")
+	var analysis RegistryMetaData
+	// matches = append(matches, "Scanning Registry:")
 	if output != "" {
 		processedOutput := strings.ToLower(output)
-
 		for _, match := range RegistryReconList {
 			if strings.Contains(
 				processedOutput,
 				strings.ToLower(match)) {
-				matches = append(matches, fmt.Sprintf("\n\t%s", match))
+				analysis.RegistryScanMatch = append(analysis.RegistryScanMatch, match)
 			}
 		}
 	}
-	if cap(matches) > 1 {
-		return fmt.Sprint(strings.Join(matches, "")), nil
+	if cap(analysis.RegistryScanMatch) > 0 {
+		return analysis, nil
 	}
-	return "", fmt.Errorf("nothing found in registry")
+	return RegistryMetaData{}, fmt.Errorf("nothing found in registry")
 }

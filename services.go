@@ -19,61 +19,60 @@ type Win32_Service struct {
 	// StartMode string
 }
 
-func (edr *EdrHunt) CheckServices() (string, error) {
+func (edr *EdrHunt) CheckServices() ([]ServiceMetaData, error) {
 	var (
 		serviceList []Win32_Service
-		summary     string
 		errArray    []string
+		summary     []ServiceMetaData
 	)
 	query := wmi.CreateQuery(&serviceList, "")
 	err := wmi.Query(query, &serviceList)
 	if err != nil {
-		return "", err
+		return []ServiceMetaData{}, err
 	}
 	for _, service := range serviceList {
 		output, err := AnalyzeService(service)
 		if err != nil {
 			errArray = append(errArray, fmt.Sprintf("%v", err))
 		}
-		summary += output
+		if output.ServiceName == "" {
+			continue
+		}
+		summary = append(summary, output)
 	}
 
 	return summary, fmt.Errorf("%v", errArray)
 }
 
-func AnalyzeService(service Win32_Service) (string, error) {
-	serviceName := service.Name
-	serviceDisplayName := service.DisplayName
-	serviceDescription := service.Description
-	serviceCaption := service.Caption
-	servicePathName := service.PathName
-	serviceState := service.State
-	serviceProcessId := fmt.Sprint(service.ProcessId)
-	var (
-		metadata string
-		err      error
-		matches  []string
-	)
-	allAttribs := fmt.Sprintf("%s %s %s %s %s", serviceName, serviceDisplayName, serviceDescription, serviceCaption, servicePathName)
-	if servicePathName != "" {
-		trim := strings.Index(servicePathName, ".exe")
+func AnalyzeService(service Win32_Service) (ServiceMetaData, error) {
+
+	var err error
+	analysis := ServiceMetaData{
+		ServiceName:        service.Name,
+		ServiceDisplayName: service.DisplayName,
+		ServiceDescription: service.Description,
+		ServiceCaption:     service.Caption,
+		ServicePathName:    service.PathName,
+		ServiceState:       service.State,
+		ServiceProcessId:   fmt.Sprint(service.ProcessId),
+	}
+	if analysis.ServicePathName != "" {
+		trim := strings.Index(analysis.ServicePathName, ".exe")
 		if trim > 0 {
-			servicePath := servicePathName[:trim] + ".exe"
-			metadata, err = GetFileMetaData(servicePath)
-			allAttribs += metadata
+			servicePath := analysis.ServicePathName[:trim] + ".exe"
+			analysis.ServiceExeMetaData, err = GetFileMetaData(servicePath)
 		}
 	}
+
 	for _, edr := range EdrList {
-		//regexp as alternate but saving another import. No bully Pt.2
 		if strings.Contains(
-			strings.ToLower(allAttribs),
+			strings.ToLower(fmt.Sprint(analysis)),
 			strings.ToLower(edr)) {
-			matches = append(matches, edr)
+			analysis.ServiceScanMatch = append(analysis.ServiceScanMatch, edr)
 		}
 	}
-	if cap(matches) > 0 {
-		output := fmt.Sprintf("\nSuspicious Service Name: %s\nDisplay Name: %s\nDescription: %s\nCaption: %s\nCommandLine: %s\nStatus: %s\nProcessID: %s\nFile Metadata: %s\nMatched Keyword: %s\n", serviceName, serviceDisplayName, serviceDescription, serviceCaption, servicePathName, serviceState, serviceProcessId, metadata, matches)
-		return output, err
+	if cap(analysis.ServiceScanMatch) > 0 {
+		return analysis, err
 	}
-	return "", err
+	return ServiceMetaData{}, err
 }

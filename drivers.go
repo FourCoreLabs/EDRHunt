@@ -61,6 +61,12 @@ func syscall3(trap, nargs, a1, a2, a3 uintptr) uintptr {
 
 // dodgy function: may cause BOF
 func UTF16PtrToString(p *uint16) string {
+	defer func() {
+		if r := recover(); r != nil {
+			return
+		}
+	}()
+
 	if p == nil {
 		return ""
 	}
@@ -144,13 +150,14 @@ func GetDriverBaseName(driverAddrs uintptr) (string, error) {
 	return UTF16PtrToString(utf16String), nil
 }
 
-func IterateOverDrivers(numberOfDrivers uint, driverAddrs []uintptr) (string, []string) {
+func IterateOverDrivers(numberOfDrivers uint, driverAddrs []uintptr) ([]DriverMetaData, []string) {
 
 	var (
 		counter  uint
 		errArray []string
+		summary  []DriverMetaData
 	)
-	summary := ""
+
 	for counter = 0; counter < numberOfDrivers; counter++ {
 		driverFileName, err := GetDriverFileName(driverAddrs[counter])
 		if err != nil {
@@ -162,17 +169,20 @@ func IterateOverDrivers(numberOfDrivers uint, driverAddrs []uintptr) (string, []
 			errArray = append(errArray, fmt.Sprintf("%v", err))
 			continue
 		}
-		// fmt.Println("DriverFile, DriverBaseName:", driverFileName, driverBaseName)
 		output, err := AnalyzeDriver(driverFileName, driverBaseName)
 		if err != nil {
 			errArray = append(errArray, fmt.Sprintf("%v", err))
 		}
-		summary += output
+		if output.DriverBaseName == "" {
+			continue
+		}
+		summary = append(summary, output)
 	}
 	return summary, errArray
 }
 
-func AnalyzeDriver(driverFileName string, driverBaseName string) (string, error) {
+func AnalyzeDriver(driverFileName string, driverBaseName string) (DriverMetaData, error) {
+	var err error
 
 	fixedDriverPath := strings.ToLower(driverFileName)
 	fixedDriverPath = strings.Replace(fixedDriverPath, `\systemroot\`, `c:\windows\`, -1)
@@ -181,28 +191,31 @@ func AnalyzeDriver(driverFileName string, driverBaseName string) (string, error)
 	} else if strings.HasPrefix(fixedDriverPath, `\??\`) {
 		fixedDriverPath = strings.Replace(fixedDriverPath, `\??\`, ``, -1)
 	}
-	metadata, err := GetFileMetaData(fixedDriverPath)
-	allAttribs := metadata + driverBaseName
-	var matches []string
+	analysis := DriverMetaData{
+		DriverBaseName: driverBaseName,
+		DriverFilePath: fixedDriverPath,
+	}
+
+	analysis.DriverSysMetaData, err = GetFileMetaData(fixedDriverPath)
 	for _, edr := range EdrList {
-		//regexp as alternate but saving another import. No bully Pt.2
+		//regexp as alternate but saving another import. No bully.
 		if strings.Contains(
-			strings.ToLower(allAttribs),
+			strings.ToLower(fmt.Sprint(analysis)),
 			strings.ToLower(edr)) {
-			matches = append(matches, edr)
+			analysis.DriverScanMatch = append(analysis.DriverScanMatch, edr)
 		}
 	}
-	if cap(matches) > 0 {
-		return fmt.Sprintf("\nSuspicious Driver Module: %s\nFile Metadata: %s\nMatched Keyword: %s\n", driverBaseName, metadata, matches), err
+	if cap(analysis.DriverScanMatch) > 0 {
+		return analysis, err
 	}
-	return "", err
+	return DriverMetaData{}, err
 }
 
-func (edr *EdrHunt) CheckDrivers() (string, error) {
+func (edr *EdrHunt) CheckDrivers() ([]DriverMetaData, error) {
 
 	sizeOfDriverArrayInBytes, err := GetSizeOfDriversArray()
 	if err != nil {
-		return "", err
+		return []DriverMetaData{}, err
 	}
 
 	sizeOfOneDriverAddress := uint(unsafe.Sizeof(uintptr(0)))
@@ -211,8 +224,9 @@ func (edr *EdrHunt) CheckDrivers() (string, error) {
 
 	success := EnumDeviceDrivers(driverAddrs, DWORD(sizeOfDriverArrayInBytes), &sizeOfDriverArrayInBytes)
 	if !success {
-		return "", fmt.Errorf("failed to enumerate device drivers, error code: %d", syscall.GetLastError())
+		return []DriverMetaData{}, fmt.Errorf("failed to enumerate device drivers, error code: %d", syscall.GetLastError())
 	}
+
 	// filterErrArray optional || Don't bully.
 	summary, filterErrArray := IterateOverDrivers(numberOfDrivers, driverAddrs)
 	if strings.TrimSpace(strings.Join(filterErrArray, "")) != "" {

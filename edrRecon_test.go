@@ -1,6 +1,7 @@
 package edrRecon
 
 import (
+	"encoding/json"
 	"fmt"
 	"testing"
 )
@@ -10,15 +11,33 @@ var recon EdrHunt
 func TestCheckDrivers(t *testing.T) {
 
 	summary, err := recon.CheckDrivers()
-	fmt.Println(summary)
+	for _, driver := range summary {
+		output := fmt.Sprintf("\nSuspicious Driver Module: %s\nDriver FilePath: %s\nDriver File Metadata: %s\nMatched Keyword: %s\n", driver.DriverBaseName, driver.DriverFilePath, FileMetaDataParser(driver.DriverSysMetaData), driver.DriverScanMatch)
+		fmt.Println(output)
+	}
 	if err.Error() != "" {
 		t.Error(err)
 	}
 }
 
+func TestCheckRegistry(t *testing.T) {
+	summary, err := recon.CheckRegistry()
+	fmt.Println("Scanning registry: ")
+	for _, match := range summary.RegistryScanMatch {
+		fmt.Printf("\t%s\n", match)
+	}
+
+	if err != nil {
+		fmt.Println("error", err)
+	}
+}
+
 func TestCheckServices(t *testing.T) {
 	summary, err := recon.CheckServices()
-	fmt.Println(summary)
+	for _, service := range summary {
+		output := fmt.Sprintf("\nSuspicious Service Name: %s\nDisplay Name: %s\nDescription: %s\nCaption: %s\nCommandLine: %s\nStatus: %s\nProcessID: %s\nFile Metadata: %s\nMatched Keyword: %s\n", service.ServiceName, service.ServiceDisplayName, service.ServiceDescription, service.ServiceCaption, service.ServicePathName, service.ServiceState, service.ServiceProcessId, FileMetaDataParser(service.ServiceExeMetaData), service.ServiceScanMatch)
+		fmt.Println(output)
+	}
 	if err.Error() != "" {
 		fmt.Println("error", err)
 	}
@@ -26,25 +45,22 @@ func TestCheckServices(t *testing.T) {
 
 func TestCheckProcesses(t *testing.T) {
 	summary, err := recon.CheckProcesses()
-	fmt.Println(summary)
+	for _, process := range summary {
+		output := fmt.Sprintf("\nSuspicious Process Name: %s\nDescription: %s\nCaption: %s\nBinary: %s\nProcessID: %s\nParent Process: %s\nProcess CmdLine : %s\nFile Metadata: %s\nMatched Keyword: %s\n", process.ProcessName, process.ProcessDescription, process.ProcessCaption, process.ProcessPath, process.ProcessPID, process.ProcessParentPID, process.ProcessCmdLine, FileMetaDataParser(process.ProcessExeMetaData), process.ProcessScanMatch)
+		fmt.Println(output)
+	}
 	if err.Error() != "" {
 		fmt.Println("error", err)
 	}
 }
 
-func TestCheckRegistry(t *testing.T) {
-	summary, err := recon.CheckRegistry()
-	fmt.Println(summary)
-	if err != nil {
-		fmt.Println("error", err)
-	}
-}
 func TestGetFileMetaData(t *testing.T) {
-	string, err := GetFileMetaData(`C:\Users\hardi\Desktop\ErrorCode.exe`)
+	fileMetaData, err := GetFileMetaData(`C:\Users\hardi\AnyDesk.exe`)
 	if err != nil {
 		t.Error(err)
 	}
-	fmt.Println(string)
+	file, _ := json.Marshal(fileMetaData)
+	fmt.Println(string(file))
 }
 
 func TestGetDirectory(t *testing.T) {
