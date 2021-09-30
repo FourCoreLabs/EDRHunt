@@ -26,8 +26,8 @@ jobs:
         name: Install garble
         run: |
           go install mvdan.cc/garble@latest
-          cp garble-literals.sh /usr/bin/garble-literals
-          chmod +x /usr/bin/garble-literals
+          sudo cp garble-literals.sh /usr/bin/garble-literals
+          sudo chmod +x /usr/bin/garble-literals
       -
         name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v2
