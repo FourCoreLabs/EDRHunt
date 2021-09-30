@@ -20,57 +20,55 @@ type Win32_Process struct {
 	// StartMode string
 }
 
-func (edr *EdrHunt) CheckProcesses() (string, error) {
+func (edr *EdrHunt) CheckProcesses() ([]ProcessMetaData, error) {
 	var (
 		processList []Win32_Process
-		summary     string
 		errArray    []string
+		summary     []ProcessMetaData
 	)
 	query := wmi.CreateQuery(&processList, "")
 	err := wmi.Query(query, &processList)
 	if err != nil {
-		return "", err
+		return []ProcessMetaData{}, err
 	}
 	for _, process := range processList {
 		output, err := AnalyzeProcess(process)
 		if err != nil {
 			errArray = append(errArray, fmt.Sprintf("%v", err))
 		}
-		summary += output
+		if output.ProcessName == "" {
+			continue
+		}
+		summary = append(summary, output)
 	}
 
 	return summary, fmt.Errorf("%v", errArray)
 }
 
-func AnalyzeProcess(process Win32_Process) (string, error) {
-	processName := process.Name
-	processPath := process.ExecutablePath
-	processDescription := process.Description
-	processCaption := process.Caption
-	processCmdLine := process.CommandLine
-	processPID := fmt.Sprint(process.ProcessId)
-	processParent := fmt.Sprint(process.ParentProcessId)
-	var (
-		metadata string
-		err      error
-		matches  []string
-	)
-	allAttribs := fmt.Sprintf("%s %s %s %s %s", processName, processPath, processDescription, processCaption, processCmdLine)
-	if processPath != "" {
-		metadata, err = GetFileMetaData(processPath)
-		allAttribs += metadata
+func AnalyzeProcess(process Win32_Process) (ProcessMetaData, error) {
+	var err error
+	analysis := ProcessMetaData{
+		ProcessName:        process.Name,
+		ProcessPath:        process.ExecutablePath,
+		ProcessDescription: process.Description,
+		ProcessCaption:     process.Caption,
+		ProcessCmdLine:     process.CommandLine,
+		ProcessPID:         fmt.Sprint(process.ProcessId),
+		ProcessParentPID:   fmt.Sprint(process.ParentProcessId),
+	}
+	if analysis.ProcessPath != "" {
+		analysis.ProcessExeMetaData, err = GetFileMetaData(analysis.ProcessPath)
 	}
 	for _, edr := range EdrList {
-		//regexp as alternate but saving another import. No bully Pt.2
 		if strings.Contains(
-			strings.ToLower(allAttribs),
+			strings.ToLower(fmt.Sprint(analysis)),
 			strings.ToLower(edr)) {
-			matches = append(matches, edr)
+			analysis.ScanMatch = append(analysis.ScanMatch, edr)
 		}
 	}
-	if cap(matches) > 0 {
-		output := fmt.Sprintf("\nSuspicious Process Name: %s\nDescription: %s\nCaption: %s\nBinary: %s\nProcessID: %s\nParent Process: %s\nProcess CmdLine : %s\nFile Metadata: %s\nMatched Keyword: %s\n", processName, processDescription, processCaption, processPath, processPID, processParent, processCmdLine, metadata, matches)
-		return output, err
+
+	if cap(analysis.ScanMatch) > 0 {
+		return analysis, err
 	}
-	return "", err
+	return ProcessMetaData{}, err
 }
