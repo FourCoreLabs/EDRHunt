@@ -11,7 +11,7 @@ EDR-Recon scans Windows services, drivers, processes, registry for installed EDR
 
 - Go
   - Requires Go to be installed on system. Tested on Go1.17+.
-  - `go install github.com/FourCoreLabs/edrRecon/cmd/edrRecon@latest`
+  - `go install github.com/FourCoreLabs/edrRecon/cmd/edrRecon@master`
 
 ## Usage
 

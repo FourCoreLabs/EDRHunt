@@ -4,6 +4,6 @@ builds:
       - windows
     goarch:
       - amd64
-    main: main.go
+    main: cmd/edrRecon/main.go
 archives:
   - format: zip
