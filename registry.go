@@ -71,11 +71,11 @@ func (edr *EdrHunt) CheckRegistry() (RegistryMetaData, error) {
 			if strings.Contains(
 				processedOutput,
 				strings.ToLower(match)) {
-				analysis.RegistryScanMatch = append(analysis.RegistryScanMatch, match)
+				analysis.ScanMatch = append(analysis.ScanMatch, match)
 			}
 		}
 	}
-	if cap(analysis.RegistryScanMatch) > 0 {
+	if cap(analysis.ScanMatch) > 0 {
 		return analysis, nil
 	}
 	return RegistryMetaData{}, fmt.Errorf("nothing found in registry")

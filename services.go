@@ -68,10 +68,10 @@ func AnalyzeService(service Win32_Service) (ServiceMetaData, error) {
 		if strings.Contains(
 			strings.ToLower(fmt.Sprint(analysis)),
 			strings.ToLower(edr)) {
-			analysis.ServiceScanMatch = append(analysis.ServiceScanMatch, edr)
+			analysis.ScanMatch = append(analysis.ScanMatch, edr)
 		}
 	}
-	if cap(analysis.ServiceScanMatch) > 0 {
+	if cap(analysis.ScanMatch) > 0 {
 		return analysis, err
 	}
 	return ServiceMetaData{}, err

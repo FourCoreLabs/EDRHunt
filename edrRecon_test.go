@@ -12,7 +12,7 @@ func TestCheckDrivers(t *testing.T) {
 
 	summary, err := recon.CheckDrivers()
 	for _, driver := range summary {
-		output := fmt.Sprintf("\nSuspicious Driver Module: %s\nDriver FilePath: %s\nDriver File Metadata: %s\nMatched Keyword: %s\n", driver.DriverBaseName, driver.DriverFilePath, FileMetaDataParser(driver.DriverSysMetaData), driver.DriverScanMatch)
+		output := fmt.Sprintf("\nSuspicious Driver Module: %s\nDriver FilePath: %s\nDriver File Metadata: %s\nMatched Keyword: %s\n", driver.DriverBaseName, driver.DriverFilePath, FileMetaDataParser(driver.DriverSysMetaData), driver.ScanMatch)
 		fmt.Println(output)
 	}
 	if err.Error() != "" {
@@ -23,7 +23,7 @@ func TestCheckDrivers(t *testing.T) {
 func TestCheckRegistry(t *testing.T) {
 	summary, err := recon.CheckRegistry()
 	fmt.Println("Scanning registry: ")
-	for _, match := range summary.RegistryScanMatch {
+	for _, match := range summary.ScanMatch {
 		fmt.Printf("\t%s\n", match)
 	}
 
@@ -35,7 +35,7 @@ func TestCheckRegistry(t *testing.T) {
 func TestCheckServices(t *testing.T) {
 	summary, err := recon.CheckServices()
 	for _, service := range summary {
-		output := fmt.Sprintf("\nSuspicious Service Name: %s\nDisplay Name: %s\nDescription: %s\nCaption: %s\nCommandLine: %s\nStatus: %s\nProcessID: %s\nFile Metadata: %s\nMatched Keyword: %s\n", service.ServiceName, service.ServiceDisplayName, service.ServiceDescription, service.ServiceCaption, service.ServicePathName, service.ServiceState, service.ServiceProcessId, FileMetaDataParser(service.ServiceExeMetaData), service.ServiceScanMatch)
+		output := fmt.Sprintf("\nSuspicious Service Name: %s\nDisplay Name: %s\nDescription: %s\nCaption: %s\nCommandLine: %s\nStatus: %s\nProcessID: %s\nFile Metadata: %s\nMatched Keyword: %s\n", service.ServiceName, service.ServiceDisplayName, service.ServiceDescription, service.ServiceCaption, service.ServicePathName, service.ServiceState, service.ServiceProcessId, FileMetaDataParser(service.ServiceExeMetaData), service.ScanMatch)
 		fmt.Println(output)
 	}
 	if err.Error() != "" {
@@ -46,7 +46,7 @@ func TestCheckServices(t *testing.T) {
 func TestCheckProcesses(t *testing.T) {
 	summary, err := recon.CheckProcesses()
 	for _, process := range summary {
-		output := fmt.Sprintf("\nSuspicious Process Name: %s\nDescription: %s\nCaption: %s\nBinary: %s\nProcessID: %s\nParent Process: %s\nProcess CmdLine : %s\nFile Metadata: %s\nMatched Keyword: %s\n", process.ProcessName, process.ProcessDescription, process.ProcessCaption, process.ProcessPath, process.ProcessPID, process.ProcessParentPID, process.ProcessCmdLine, FileMetaDataParser(process.ProcessExeMetaData), process.ProcessScanMatch)
+		output := fmt.Sprintf("\nSuspicious Process Name: %s\nDescription: %s\nCaption: %s\nBinary: %s\nProcessID: %s\nParent Process: %s\nProcess CmdLine : %s\nFile Metadata: %s\nMatched Keyword: %s\n", process.ProcessName, process.ProcessDescription, process.ProcessCaption, process.ProcessPath, process.ProcessPID, process.ProcessParentPID, process.ProcessCmdLine, FileMetaDataParser(process.ProcessExeMetaData), process.ScanMatch)
 		fmt.Println(output)
 	}
 	if err.Error() != "" {

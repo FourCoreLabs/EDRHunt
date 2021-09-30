@@ -202,10 +202,10 @@ func AnalyzeDriver(driverFileName string, driverBaseName string) (DriverMetaData
 		if strings.Contains(
 			strings.ToLower(fmt.Sprint(analysis)),
 			strings.ToLower(edr)) {
-			analysis.DriverScanMatch = append(analysis.DriverScanMatch, edr)
+			analysis.ScanMatch = append(analysis.ScanMatch, edr)
 		}
 	}
-	if cap(analysis.DriverScanMatch) > 0 {
+	if cap(analysis.ScanMatch) > 0 {
 		return analysis, err
 	}
 	return DriverMetaData{}, err

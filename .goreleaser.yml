@@ -4,7 +4,7 @@ builds:
       - windows
     goarch:
       - amd64
+    gobinary: "garble-literals"
     main: ./cmd/main/main.go
 archives:
-  -
-    format: zip
+  - format: zip

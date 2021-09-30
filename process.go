@@ -63,11 +63,11 @@ func AnalyzeProcess(process Win32_Process) (ProcessMetaData, error) {
 		if strings.Contains(
 			strings.ToLower(fmt.Sprint(analysis)),
 			strings.ToLower(edr)) {
-			analysis.ProcessScanMatch = append(analysis.ProcessScanMatch, edr)
+			analysis.ScanMatch = append(analysis.ScanMatch, edr)
 		}
 	}
 
-	if cap(analysis.ProcessScanMatch) > 0 {
+	if cap(analysis.ScanMatch) > 0 {
 		return analysis, err
 	}
 	return ProcessMetaData{}, err
