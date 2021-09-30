@@ -15,7 +15,7 @@ var (
 	services     bool
 	registry     bool
 	all          bool
-	version      string
+	versionStr   string = "0.3"
 	versionCheck bool
 	recon        edrRecon.EdrHunt
 	scanners     = []edrRecon.EDRDetection{
@@ -63,8 +63,8 @@ func edrCommand(cmd *cobra.Command, args []string) {
 }
 
 func versionCommand(cmd *cobra.Command, args []string) {
-	if version != "" {
-		fmt.Printf("edrRecon version: %s\n", version)
+	if versionStr != "" {
+		fmt.Printf("edrRecon version: %s\n", versionStr)
 		return
 	}
 	fmt.Printf("edrRecon version: beta-release-v.1\n")

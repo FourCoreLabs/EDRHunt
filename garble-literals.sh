@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-garble -literals $@
+garble -literals -tiny $@
