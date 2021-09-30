@@ -4,6 +4,6 @@ builds:
       - windows
     goarch:
       - amd64
-    main: ./cmd/main/main.go
+    main: main.go
 archives:
   - format: zip

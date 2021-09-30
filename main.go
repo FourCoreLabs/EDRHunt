@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/FourCoreLabs/edrRecon"
+	"github.com/FourCoreLabs/edrRecon/pkg/edrRecon"
 
 	"github.com/spf13/cobra"
 )
