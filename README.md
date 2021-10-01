@@ -52,3 +52,12 @@ $ .\edrRecon.exe -d
 ```
 $ .\edrRecon.exe -r
 ```
+
+## Detections
+
+EDR Detections Currently Available
+
+- Windows Defender
+- Kaspersky Security
+
+More to be added soon.
