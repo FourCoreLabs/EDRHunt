@@ -29,12 +29,72 @@ Detected EDR: Kaspersky Security
 - Scan Everything
 ```
 $ .\edrRecon.exe all
+Running in user mode, escalate to admin for more details.
+Scanning processes, services, drivers, and registry...
+[PROCESSES]
+
+Suspicious Process Name: MsMpEng.exe
+Description: MsMpEng.exe
+Caption: MsMpEng.exe
+Binary:
+ProcessID: 6764
+Parent Process: 1148
+Process CmdLine :
+File Metadata:
+Matched Keyword: [msmpeng]
+
+
+Suspicious Process Name: NisSrv.exe
+Description: NisSrv.exe
+Caption: NisSrv.exe
+Binary:
+ProcessID: 9840
+Parent Process: 1148
+Process CmdLine :
+File Metadata:
+Matched Keyword: [nissrv]
+...
 ```
 
 - Find processes matching EDR keywords
 
 ```
 $ .\edrRecon.exe -p
+Running in user mode, escalate to admin for more details.
+[PROCESSES]
+
+Suspicious Process Name: MsMpEng.exe
+Description: MsMpEng.exe
+Caption: MsMpEng.exe
+Binary:
+ProcessID: 6764
+Parent Process: 1148
+Process CmdLine :
+File Metadata:
+Matched Keyword: [msmpeng]
+
+
+Suspicious Process Name: NisSrv.exe
+Description: NisSrv.exe
+Caption: NisSrv.exe
+Binary:
+ProcessID: 9840
+Parent Process: 1148
+Process CmdLine :
+File Metadata:
+Matched Keyword: [nissrv]
+
+
+Suspicious Process Name: SecurityHealthService.exe
+Description: SecurityHealthService.exe
+Caption: SecurityHealthService.exe
+Binary:
+ProcessID: 13720
+Parent Process: 1148
+Process CmdLine :
+File Metadata:
+Matched Keyword: [securityhealthservice]
+...
 ```
 
 - Find services matching EDR keywords
