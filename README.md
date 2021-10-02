@@ -4,6 +4,8 @@
 
 EDR-Recon scans Windows services, drivers, processes, registry for installed EDRs.
 
+[![asciicast](https://asciinema.org/a/3UEKxkSE2nlBbEhL5HDOapYRn.svg)](https://asciinema.org/a/3UEKxkSE2nlBbEhL5HDOapYRn)
+
 ## Install
 
 - Binary
