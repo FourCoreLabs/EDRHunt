@@ -21,6 +21,10 @@ var (
 	scanners     = []edrRecon.EDRDetection{
 		&edrRecon.WinDefenderDetection{},
 		&edrRecon.KaskperskyDetection{},
+		&edrRecon.CrowdstrikeDetection{},
+		&edrRecon.CylanceDetection{},
+		&edrRecon.McafeeDetection{},
+		&edrRecon.SymantecDetection{},
 	}
 )
 

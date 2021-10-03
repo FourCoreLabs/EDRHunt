@@ -310,6 +310,7 @@ var (
 	CrowdstrikeEDR EDRType = "crowdstrike"
 	McafeeEDR      EDRType = "mcafee"
 	SymantecEDR    EDRType = "symantec"
+	CylanceEDR     EDRType = "cylance"
 )
 
 var McafeeList = []string{

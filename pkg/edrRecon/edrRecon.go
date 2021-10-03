@@ -70,6 +70,7 @@ type EDRDetection interface {
 	Type() EDRType
 }
 
+//  -----------------------------------------------------------------------
 type WinDefenderDetection struct{}
 
 func (w *WinDefenderDetection) Name() string {
@@ -145,6 +146,7 @@ func (w *WinDefenderDetection) Detect(data SystemData) (EDRType, bool) {
 	return WinDefenderEDR, true
 }
 
+//  -----------------------------------------------------------------------
 type KaskperskyDetection struct{}
 
 func (w *KaskperskyDetection) Name() string {
@@ -195,4 +197,229 @@ func (w *KaskperskyDetection) Detect(data SystemData) (EDRType, bool) {
 	}
 
 	return KaskperskyEDR, true
+}
+
+//  -----------------------------------------------------------------------
+type CylanceDetection struct{}
+
+func (w *CylanceDetection) Name() string {
+	return "Cylance Smart Antivirus"
+}
+
+func (w *CylanceDetection) Type() EDRType {
+	return CylanceEDR
+}
+
+var CylanceHeuristic = []string{
+	"Cylance\\",
+	"Cylance0",
+	"Cylance1",
+	"Cylance2",
+}
+
+func (w *CylanceDetection) Detect(data SystemData) (EDRType, bool) {
+	var (
+		match bool
+	)
+
+	scanMatchList := make([]string, 0)
+
+	for _, v := range data.Processes {
+		scanMatchList = append(scanMatchList, v.ScanMatch...)
+	}
+
+	for _, v := range data.Services {
+		scanMatchList = append(scanMatchList, v.ScanMatch...)
+	}
+
+	for _, v := range data.Drivers {
+		scanMatchList = append(scanMatchList, v.ScanMatch...)
+	}
+
+	scanMatchList = append(scanMatchList, data.Registry.ScanMatch...)
+
+	keywordList := make([]string, 0, len(CylanceHeuristic))
+	keywordList = append(keywordList, CylanceHeuristic...)
+
+	for _, v := range keywordList {
+		contains := StrSliceContains(scanMatchList, v)
+		if contains {
+			match = true
+		}
+	}
+
+	if !match {
+		return "", false
+	}
+
+	return CylanceEDR, true
+}
+
+// ----------------------------------------------------------------
+type SymantecDetection struct{}
+
+func (w *SymantecDetection) Name() string {
+	return "Symantec Endpoint Security"
+}
+
+func (w *SymantecDetection) Type() EDRType {
+	return SymantecEDR
+}
+
+var SymantecHeuristic = []string{
+	"symantec",
+	"symcorpu",
+	"symefasi",
+	"Symantec",
+	"Symantec Endpoint Protection\\",
+}
+
+func (w *SymantecDetection) Detect(data SystemData) (EDRType, bool) {
+	var (
+		match bool
+	)
+
+	scanMatchList := make([]string, 0)
+
+	for _, v := range data.Processes {
+		scanMatchList = append(scanMatchList, v.ScanMatch...)
+	}
+
+	for _, v := range data.Services {
+		scanMatchList = append(scanMatchList, v.ScanMatch...)
+	}
+
+	for _, v := range data.Drivers {
+		scanMatchList = append(scanMatchList, v.ScanMatch...)
+	}
+
+	scanMatchList = append(scanMatchList, data.Registry.ScanMatch...)
+
+	keywordList := make([]string, 0, len(SymantecHeuristic))
+	keywordList = append(keywordList, SymantecHeuristic...)
+
+	for _, v := range keywordList {
+		contains := StrSliceContains(scanMatchList, v)
+		if contains {
+			match = true
+		}
+	}
+
+	if !match {
+		return "", false
+	}
+
+	return SymantecEDR, true
+}
+
+//----------------------------------------------------------------
+type McafeeDetection struct{}
+
+func (w *McafeeDetection) Name() string {
+	return "McAfee MVISION Endpoint Detection and Response"
+}
+
+func (w *McafeeDetection) Type() EDRType {
+	return McafeeEDR
+}
+
+var McfeeHeuristic = []string{
+	"Mcafee\\",
+	"McAfeeAgent\\",
+	"APPolicyName",
+	"EPPolicyName",
+	"OASPolicyName",
+}
+
+func (w *McafeeDetection) Detect(data SystemData) (EDRType, bool) {
+	var (
+		match bool
+	)
+
+	scanMatchList := make([]string, 0)
+
+	for _, v := range data.Processes {
+		scanMatchList = append(scanMatchList, v.ScanMatch...)
+	}
+
+	for _, v := range data.Services {
+		scanMatchList = append(scanMatchList, v.ScanMatch...)
+	}
+
+	for _, v := range data.Drivers {
+		scanMatchList = append(scanMatchList, v.ScanMatch...)
+	}
+
+	scanMatchList = append(scanMatchList, data.Registry.ScanMatch...)
+
+	keywordList := make([]string, 0, len(McfeeHeuristic))
+	keywordList = append(keywordList, McfeeHeuristic...)
+
+	for _, v := range keywordList {
+		contains := StrSliceContains(scanMatchList, v)
+		if contains {
+			match = true
+		}
+	}
+
+	if !match {
+		return "", false
+	}
+
+	return McafeeEDR, true
+}
+
+//----------------------------------------------------------------
+type CrowdstrikeDetection struct{}
+
+func (w *CrowdstrikeDetection) Name() string {
+	return "Crowdstrike EDR Solution"
+}
+
+func (w *CrowdstrikeDetection) Type() EDRType {
+	return SymantecEDR
+}
+
+var CrowdstrikeHeuristic = []string{
+	"CrowdStrike",
+	"%SYSTEMROOT%\\system32\\drivers\\crowdstrike\\CsDeviceControl.inf",
+	"%SYSTEMROOT%\\system32\\drivers\\crowdstrike\\CsFirmwareAnalysis.inf",
+}
+
+func (w *CrowdstrikeDetection) Detect(data SystemData) (EDRType, bool) {
+	var (
+		match bool
+	)
+
+	scanMatchList := make([]string, 0)
+
+	for _, v := range data.Processes {
+		scanMatchList = append(scanMatchList, v.ScanMatch...)
+	}
+
+	for _, v := range data.Services {
+		scanMatchList = append(scanMatchList, v.ScanMatch...)
+	}
+
+	for _, v := range data.Drivers {
+		scanMatchList = append(scanMatchList, v.ScanMatch...)
+	}
+
+	scanMatchList = append(scanMatchList, data.Registry.ScanMatch...)
+
+	keywordList := make([]string, 0, len(CrowdstrikeHeuristic))
+	keywordList = append(keywordList, CrowdstrikeHeuristic...)
+
+	for _, v := range keywordList {
+		contains := StrSliceContains(scanMatchList, v)
+		if contains {
+			match = true
+		}
+	}
+
+	if !match {
+		return "", false
+	}
+
+	return CrowdstrikeEDR, true
 }
