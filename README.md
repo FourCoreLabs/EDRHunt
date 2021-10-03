@@ -121,5 +121,9 @@ EDR Detections Currently Available
 
 - Windows Defender
 - Kaspersky Security
+- Symantec Security
+- Crowdstrike Security
+- Mcafee Security
+- Cylance Security
 
 More to be added soon.
