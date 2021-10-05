@@ -1,4 +1,4 @@
-module github.com/FourCoreLabs/edrRecon
+module github.com/FourCoreLabs/EDRHunt
 
 go 1.17
 

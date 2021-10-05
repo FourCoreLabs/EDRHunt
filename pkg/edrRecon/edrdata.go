@@ -302,17 +302,6 @@ var ReconList = []string{
 	"LsaCfgFlags",
 }
 
-type EDRType string
-
-var (
-	WinDefenderEDR EDRType = "defender"
-	KaskperskyEDR  EDRType = "kaspersky"
-	CrowdstrikeEDR EDRType = "crowdstrike"
-	McafeeEDR      EDRType = "mcafee"
-	SymantecEDR    EDRType = "symantec"
-	CylanceEDR     EDRType = "cylance"
-)
-
 var McafeeList = []string{
 	"Mcafee\\",
 	"McAfeeAgent\\",

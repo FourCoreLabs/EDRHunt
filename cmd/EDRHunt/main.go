@@ -4,8 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/FourCoreLabs/edrRecon/pkg/edrRecon"
-
+	"github.com/FourCoreLabs/EDRHunt/pkg/edrRecon"
 	"github.com/spf13/cobra"
 )
 
@@ -15,7 +14,7 @@ var (
 	services     bool
 	registry     bool
 	all          bool
-	versionStr   string = "0.3"
+	versionStr   string = "1.0"
 	versionCheck bool
 	recon        edrRecon.EdrHunt
 	scanners     = []edrRecon.EDRDetection{
@@ -27,6 +26,19 @@ var (
 		&edrRecon.SymantecDetection{},
 	}
 )
+
+func printBanner() {
+	fmt.Printf(`
+    __________  ____     __  ____  ___   ________
+   / ____/ __ \/ __ \   / / / / / / / | / /_  __/
+  / __/ / / / / /_/ /  / /_/ / / / /  |/ / / /   
+ / /___/ /_/ / _, _/  / __  / /_/ / /|  / / /    
+/_____/_____/_/ |_|  /_/ /_/\____/_/ |_/ /_/     																				
+
+FourCore Labs (https://fourcore.vision) | Version: %v
+
+`, versionStr)
+}
 
 func edrCommand(cmd *cobra.Command, args []string) {
 	if edrRecon.CheckIfAdmin() {
@@ -144,8 +156,10 @@ func printRegistry(summary edrRecon.RegistryMetaData) {
 
 func printDrivers(summary []edrRecon.DriverMetaData) {
 	for _, driver := range summary {
-		output := fmt.Sprintf("\nSuspicious Driver Module: %s\nDriver FilePath: %s\nDriver File Metadata: %s\nMatched Keyword: %s\n", driver.DriverBaseName, driver.DriverFilePath, edrRecon.FileMetaDataParser(driver.DriverSysMetaData), driver.ScanMatch)
-		fmt.Println(output)
+		fmt.Printf("Suspicious Driver Module: %s\n", driver.DriverBaseName)
+		fmt.Printf("Driver FilePath: %s\n", driver.DriverFilePath)
+		fmt.Printf("Driver File Metadata: %s\n", edrRecon.FileMetaDataParser(driver.DriverSysMetaData))
+		fmt.Printf("Matched Keyword: %s\n", driver.ScanMatch)
 	}
 }
 
@@ -169,5 +183,6 @@ func init() {
 }
 
 func main() {
+	printBanner()
 	Execute()
 }

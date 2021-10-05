@@ -1,8 +1,8 @@
-# EDR-Recon
+# EDRHunt
 
-[![goreleaser](https://github.com/FourCoreLabs/edrRecon/actions/workflows/goreleaser.yml/badge.svg)](https://github.com/FourCoreLabs/edrRecon/actions/workflows/goreleaser.yml)
+[![goreleaser](https://github.com/FourCoreLabs/EDRHunt/actions/workflows/goreleaser.yml/badge.svg)](https://github.com/FourCoreLabs/EDRHunt/actions/workflows/goreleaser.yml)
 
-EDR-Recon scans Windows services, drivers, processes, registry for installed EDRs.
+EDRHunt scans Windows services, drivers, processes, registry for installed EDRs.
 
 [![asciicast](https://asciinema.org/a/3UEKxkSE2nlBbEhL5HDOapYRn.svg)](https://asciinema.org/a/3UEKxkSE2nlBbEhL5HDOapYRn)
 
@@ -13,14 +13,14 @@ EDR-Recon scans Windows services, drivers, processes, registry for installed EDR
 
 - Go
   - Requires Go to be installed on system. Tested on Go1.17+.
-  - `go install github.com/FourCoreLabs/edrRecon/cmd/edrRecon@master`
+  - `go install github.com/FourCoreLabs/EDRHunt/cmd/EDRHunt@master`
 
 ## Usage
 
 - Find installed EDRs
 
 ```
-$ .\edrRecon.exe scan
+$ .\EDRHunt.exe scan
 [EDR]
 Detected EDR: Windows Defender
 Detected EDR: Kaspersky Security
@@ -28,7 +28,7 @@ Detected EDR: Kaspersky Security
 
 - Scan Everything
 ```
-$ .\edrRecon.exe all
+$ .\EDRHunt.exe all
 Running in user mode, escalate to admin for more details.
 Scanning processes, services, drivers, and registry...
 [PROCESSES]
@@ -59,7 +59,7 @@ Matched Keyword: [nissrv]
 - Find processes matching EDR keywords
 
 ```
-$ .\edrRecon.exe -p
+$ .\EDRHunt.exe -p
 Running in user mode, escalate to admin for more details.
 [PROCESSES]
 
@@ -100,19 +100,19 @@ Matched Keyword: [securityhealthservice]
 - Find services matching EDR keywords
 
 ```
-$ .\edrRecon.exe -s
+$ .\EDRHunt.exe -s
 ```
 
 - Find drivers matching EDR keywords
 
 ```
-$ .\edrRecon.exe -d
+$ .\EDRHunt.exe -d
 ```
 
 - Find registry keys matching EDR keywords
 
 ```
-$ .\edrRecon.exe -r
+$ .\EDRHunt.exe -r
 ```
 
 ## Detections
@@ -125,5 +125,12 @@ EDR Detections Currently Available
 - Crowdstrike Security
 - Mcafee Security
 - Cylance Security
+- Carbon Black
+- SentinelOne
+- FireEye
 
 More to be added soon.
+
+## Community
+
+Would appreciate if you ran EDRHunt on your own deployments and test the detections! Thanks.

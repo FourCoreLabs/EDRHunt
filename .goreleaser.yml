@@ -1,9 +1,9 @@
 builds:
-  - binary: edrRecon
+  - binary: EDRHunt
     goos:
       - windows
     goarch:
       - amd64
-    main: cmd/edrRecon/main.go
+    main: cmd/EDRHunt/main.go
 archives:
   - format: zip

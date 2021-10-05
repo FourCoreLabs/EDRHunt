@@ -1,6 +1,7 @@
 package edrRecon
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 
@@ -19,7 +20,13 @@ func GetFileMetaData(filepath string) (FileMetaData, error) {
 			return
 		}
 	}()
+
 	filepath = strings.Replace(filepath, "\"", "", -1)
+
+	if filepath == "" {
+		return FileMetaData{}, errors.New("empty filepath")
+	}
+
 	file, err = fileversion.New(filepath)
 	if err != nil {
 		if strings.HasPrefix(filepath, `c:\windows\system32\`) {
@@ -32,6 +39,7 @@ func GetFileMetaData(filepath string) (FileMetaData, error) {
 	}
 
 	// fileInfoStr := fmt.Sprintf("\n\tProductName: %s\n\tOriginalFileName: %s\n\tInternalFileName: %s\n\tCompany Name: %s\n\tFileDescription: %s\n\tProductVersion: %s\n\tComments: %s\n\tLegalCopyright: %s\n\tLegalTrademarks: %s", file.ProductName(), file.OriginalFilename(), file.InternalName(), file.CompanyName(), file.FileDescription(), file.ProductVersion(), file.Comments(), file.LegalCopyright(), file.LegalTrademarks())
+
 	return FileMetaData{
 		ProductName:      file.ProductName(),
 		OriginalFilename: file.OriginalFilename(),

@@ -1,6 +1,7 @@
 package edrRecon
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 	"syscall"
@@ -97,18 +98,26 @@ func EnumDeviceDrivers(lpImageBase []uintptr, cb DWORD, lpcbNeeded *uint32) bool
 	return ret1 != 0
 }
 
-func GetDeviceDriverBaseName(imageBase LPVOID, lpBaseName LPWSTR, nSize DWORD) DWORD {
+func GetDeviceDriverBaseName(imageBase LPVOID, lpBaseName []uint16, nSize DWORD) DWORD {
 	ret1 := syscall3(getDeviceDriverBaseName, 3,
 		uintptr(unsafe.Pointer(imageBase)),
-		uintptr(unsafe.Pointer(lpBaseName)),
+		uintptr(unsafe.Pointer(&lpBaseName[0])),
 		uintptr(nSize))
 	return DWORD(ret1)
 }
 
-func GetDeviceDriverFileName(imageBase LPVOID, lpFilename LPWSTR, nSize DWORD) DWORD {
+func GetDeviceDriverFileName(imageBase uintptr, lpFilename []uint16, nSize DWORD) DWORD {
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Println("failure in GetDeviceDriverFilename")
+			fmt.Println(err)
+			return
+		}
+	}()
+
 	ret1 := syscall3(getDeviceDriverFileName, 3,
-		uintptr(unsafe.Pointer(imageBase)),
-		uintptr(unsafe.Pointer(lpFilename)),
+		imageBase,
+		uintptr(unsafe.Pointer(&lpFilename[0])),
 		uintptr(nSize))
 	return DWORD(ret1)
 }
@@ -125,46 +134,50 @@ func GetSizeOfDriversArray() (uint32, error) {
 }
 
 func GetDriverFileName(driverAddrs uintptr) (string, error) {
-	utf16String, err := syscall.UTF16PtrFromString("")
-	if err != nil {
-		return "", fmt.Errorf("failed to init string: %v", err)
+	data := make([]uint16, 1024)
+
+	if driverAddrs == 0 {
+		return "", errors.New("nil driver address uintptr")
 	}
 
-	result := GetDeviceDriverFileName(LPVOID(driverAddrs), utf16String, DWORD(1000))
+	result := GetDeviceDriverFileName(driverAddrs, data, DWORD(1000))
 	if result == 0 {
 		return "", fmt.Errorf("failed to get device driver file name: %v", syscall.GetLastError())
 	}
-	return UTF16PtrToString(utf16String), nil
+
+	return syscall.UTF16ToString(data), nil
 }
 
 func GetDriverBaseName(driverAddrs uintptr) (string, error) {
-	utf16String, err := syscall.UTF16PtrFromString("")
-	if err != nil {
-		return "", fmt.Errorf("failed to init string: %v", err)
+	data := make([]uint16, 1024)
+
+	if driverAddrs == 0 {
+		return "", errors.New("nil driver address uintptr")
 	}
 
-	result := GetDeviceDriverBaseName(LPVOID(driverAddrs), utf16String, DWORD(1000))
+	result := GetDeviceDriverBaseName(LPVOID(driverAddrs), data, DWORD(1000))
 	if result == 0 {
 		return "", fmt.Errorf("failed to get device driver file name: %v", syscall.GetLastError())
 	}
-	return UTF16PtrToString(utf16String), nil
+
+	return syscall.UTF16ToString(data), nil
 }
 
 func IterateOverDrivers(numberOfDrivers uint, driverAddrs []uintptr) ([]DriverMetaData, []string) {
 
 	var (
-		counter  uint
+		// counter  uint
 		errArray []string
-		summary  []DriverMetaData
+		summary  []DriverMetaData = make([]DriverMetaData, 0)
 	)
 
-	for counter = 0; counter < numberOfDrivers; counter++ {
-		driverFileName, err := GetDriverFileName(driverAddrs[counter])
+	for _, addr := range driverAddrs {
+		driverFileName, err := GetDriverFileName(addr)
 		if err != nil {
 			errArray = append(errArray, fmt.Sprintf("%v", err))
 			continue
 		}
-		driverBaseName, err := GetDriverBaseName(driverAddrs[counter])
+		driverBaseName, err := GetDriverBaseName(addr)
 		if err != nil {
 			errArray = append(errArray, fmt.Sprintf("%v", err))
 			continue
@@ -178,6 +191,9 @@ func IterateOverDrivers(numberOfDrivers uint, driverAddrs []uintptr) ([]DriverMe
 		}
 		summary = append(summary, output)
 	}
+
+	// for counter = 0; counter < numberOfDrivers; counter++ {
+	// }
 	return summary, errArray
 }
 
@@ -194,9 +210,11 @@ func AnalyzeDriver(driverFileName string, driverBaseName string) (DriverMetaData
 	analysis := DriverMetaData{
 		DriverBaseName: driverBaseName,
 		DriverFilePath: fixedDriverPath,
+		ScanMatch:      make([]string, 0),
 	}
 
 	analysis.DriverSysMetaData, err = GetFileMetaData(fixedDriverPath)
+
 	for _, edr := range EdrList {
 		//regexp as alternate but saving another import. No bully.
 		if strings.Contains(
@@ -205,10 +223,12 @@ func AnalyzeDriver(driverFileName string, driverBaseName string) (DriverMetaData
 			analysis.ScanMatch = append(analysis.ScanMatch, edr)
 		}
 	}
-	if cap(analysis.ScanMatch) > 0 {
+
+	if len(analysis.ScanMatch) > 0 {
 		return analysis, err
 	}
-	return DriverMetaData{}, err
+
+	return DriverMetaData{ScanMatch: make([]string, 0)}, err
 }
 
 func (edr *EdrHunt) CheckDrivers() ([]DriverMetaData, error) {
