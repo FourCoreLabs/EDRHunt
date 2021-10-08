@@ -79,11 +79,7 @@ func edrCommand(cmd *cobra.Command, args []string) {
 }
 
 func versionCommand(cmd *cobra.Command, args []string) {
-	if versionStr != "" {
-		fmt.Printf("edrRecon version: %s\n", versionStr)
-		return
-	}
-	fmt.Printf("edrRecon version: beta-release-v.1\n")
+	fmt.Printf("version: %s\n", versionStr)
 }
 
 func scanEDRCommand(cmd *cobra.Command, args []string) {
@@ -105,9 +101,9 @@ func allCommand(cmd *cobra.Command, args []string) {
 }
 
 var rootCmd = &cobra.Command{
-	Use:   "edrRecon",
+	Use:   "EDRHunt",
 	Short: "scans EDR/AV",
-	Long:  `edrRecon scans and finds the installed EDR/AV by scanning services, processes, registry, and drivers.`,
+	Long:  `EDRHunt scans and finds the installed EDR/AV by scanning services, processes, registry, and drivers.`,
 	Run:   edrCommand,
 }
 
