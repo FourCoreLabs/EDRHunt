@@ -4,7 +4,7 @@
 
 EDRHunt scans Windows services, drivers, processes, registry for installed EDRs.
 
-[![asciicast](https://asciinema.org/a/3UEKxkSE2nlBbEhL5HDOapYRn.svg)](https://asciinema.org/a/3UEKxkSE2nlBbEhL5HDOapYRn)
+[![asciicast](https://asciinema.org/a/P8i99w9mI497qUPTNbdwYWcwQ.svg)](https://asciinema.org/a/P8i99w9mI497qUPTNbdwYWcwQ)
 
 ## Install
 
