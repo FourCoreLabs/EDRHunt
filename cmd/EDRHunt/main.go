@@ -92,7 +92,7 @@ func scanEDRCommand(cmd *cobra.Command, args []string) {
 	for _, scanner := range scanners {
 		_, ok := scanner.Detect(systemData)
 		if ok {
-			fmt.Printf("Detected EDR: %s\n", scanner.Name())
+			fmt.Printf("\tDetected EDR: %s\n", scanner.Name())
 		}
 	}
 }
@@ -140,8 +140,9 @@ func printProcess(summary []edrRecon.ProcessMetaData) {
 		fmt.Printf("ProcessID: %s\n", process.ProcessPID)
 		fmt.Printf("Parent Process: %s\n", process.ProcessParentPID)
 		fmt.Printf("Process CmdLine: %s\n", process.ProcessCmdLine)
-		fmt.Printf("File Metadata: %s\n", edrRecon.FileMetaDataParser(process.ProcessExeMetaData))
+		fmt.Printf("File Metadata: \t%s\n", edrRecon.FileMetaDataParser(process.ProcessExeMetaData))
 		fmt.Printf("Matched Keyword: %s\n", process.ScanMatch)
+		fmt.Println()
 	}
 }
 
@@ -153,24 +154,27 @@ func printServices(summary []edrRecon.ServiceMetaData) {
 		fmt.Printf("CommandLine: %s\n", service.ServicePathName)
 		fmt.Printf("Status: %s\n", service.ServiceState)
 		fmt.Printf("ProcessID: %s\n", service.ServiceProcessId)
-		fmt.Printf("File Metadata: %s\n", edrRecon.FileMetaDataParser(service.ServiceExeMetaData))
+		fmt.Printf("File Metadata: \t%s\n", edrRecon.FileMetaDataParser(service.ServiceExeMetaData))
 		fmt.Printf("Matched Keyword: %s\n", service.ScanMatch)
+		fmt.Println()
 	}
 }
 
 func printRegistry(summary edrRecon.RegistryMetaData) {
 	fmt.Println("Scanning registry: ")
 	for _, match := range summary.ScanMatch {
-		fmt.Printf("%s\n", match)
+		fmt.Printf("\t%s\n", match)
 	}
+	fmt.Println()
 }
 
 func printDrivers(summary []edrRecon.DriverMetaData) {
 	for _, driver := range summary {
 		fmt.Printf("Suspicious Driver Module: %s\n", driver.DriverBaseName)
 		fmt.Printf("Driver FilePath: %s\n", driver.DriverFilePath)
-		fmt.Printf("Driver File Metadata: %s\n", edrRecon.FileMetaDataParser(driver.DriverSysMetaData))
+		fmt.Printf("Driver File Metadata: \t%s\n", edrRecon.FileMetaDataParser(driver.DriverSysMetaData))
 		fmt.Printf("Matched Keyword: %s\n", driver.ScanMatch)
+		fmt.Println()
 	}
 }
 
