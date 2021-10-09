@@ -25,6 +25,7 @@ func (edr *EdrHunt) CheckServices() ([]ServiceMetaData, error) {
 		errArray    []string
 		summary     []ServiceMetaData
 	)
+
 	query := wmi.CreateQuery(&serviceList, "")
 	err := wmi.Query(query, &serviceList)
 	if err != nil {

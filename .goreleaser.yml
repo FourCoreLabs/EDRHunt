@@ -4,6 +4,7 @@ builds:
       - windows
     goarch:
       - amd64
+    gobinary: "garble-literals"
     main: cmd/EDRHunt/main.go
 archives:
   - format: zip

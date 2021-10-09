@@ -59,22 +59,25 @@ func edrCommand(cmd *cobra.Command, args []string) {
 		fmt.Println("[PROCESSES]")
 		summary, _ := recon.CheckProcesses()
 		printProcess(summary)
-
+		fmt.Println()
 	}
 	if drivers {
 		fmt.Println("[DRIVERS]")
 		summary, _ := recon.CheckDrivers()
 		printDrivers(summary)
+		fmt.Println()
 	}
 	if services {
 		fmt.Println("[SERVICES]")
 		summary, _ := recon.CheckServices()
 		printServices(summary)
+		fmt.Println()
 	}
 	if registry {
 		fmt.Println("[REGISTRY]")
 		summary, _ := recon.CheckRegistry()
 		printRegistry(summary)
+		fmt.Println()
 	}
 }
 
@@ -130,23 +133,35 @@ var allCmd = &cobra.Command{
 
 func printProcess(summary []edrRecon.ProcessMetaData) {
 	for _, process := range summary {
-		output := fmt.Sprintf("\nSuspicious Process Name: %s\nDescription: %s\nCaption: %s\nBinary: %s\nProcessID: %s\nParent Process: %s\nProcess CmdLine : %s\nFile Metadata: %s\nMatched Keyword: %s\n", process.ProcessName, process.ProcessDescription, process.ProcessCaption, process.ProcessPath, process.ProcessPID, process.ProcessParentPID, process.ProcessCmdLine, edrRecon.FileMetaDataParser(process.ProcessExeMetaData), process.ScanMatch)
-
-		fmt.Println(output)
+		fmt.Printf("Suspicious Process Name: %s\n", process.ProcessName)
+		fmt.Printf("Description: %s\n", process.ProcessDescription)
+		fmt.Printf("Caption: %s\n", process.ProcessCaption)
+		fmt.Printf("Binary: %s\n", process.ProcessPath)
+		fmt.Printf("ProcessID: %s\n", process.ProcessPID)
+		fmt.Printf("Parent Process: %s\n", process.ProcessParentPID)
+		fmt.Printf("Process CmdLine: %s\n", process.ProcessCmdLine)
+		fmt.Printf("File Metadata: %s\n", edrRecon.FileMetaDataParser(process.ProcessExeMetaData))
+		fmt.Printf("Matched Keyword: %s\n", process.ScanMatch)
 	}
 }
 
 func printServices(summary []edrRecon.ServiceMetaData) {
 	for _, service := range summary {
-		output := fmt.Sprintf("\nSuspicious Service Name: %s\nDisplay Name: %s\nDescription: %s\nCaption: %s\nCommandLine: %s\nStatus: %s\nProcessID: %s\nFile Metadata: %s\nMatched Keyword: %s\n", service.ServiceName, service.ServiceDisplayName, service.ServiceDescription, service.ServiceCaption, service.ServicePathName, service.ServiceState, service.ServiceProcessId, edrRecon.FileMetaDataParser(service.ServiceExeMetaData), service.ScanMatch)
-		fmt.Println(output)
+		fmt.Printf("Suspicious Service Name: %s\n", service.ServiceName)
+		fmt.Printf("Display Name: %s\n", service.ServiceDisplayName)
+		fmt.Printf("Caption: %s\n", service.ServiceCaption)
+		fmt.Printf("CommandLine: %s\n", service.ServicePathName)
+		fmt.Printf("Status: %s\n", service.ServiceState)
+		fmt.Printf("ProcessID: %s\n", service.ServiceProcessId)
+		fmt.Printf("File Metadata: %s\n", edrRecon.FileMetaDataParser(service.ServiceExeMetaData))
+		fmt.Printf("Matched Keyword: %s\n", service.ScanMatch)
 	}
 }
 
 func printRegistry(summary edrRecon.RegistryMetaData) {
 	fmt.Println("Scanning registry: ")
 	for _, match := range summary.ScanMatch {
-		fmt.Printf("\t%s\n", match)
+		fmt.Printf("%s\n", match)
 	}
 }
 
