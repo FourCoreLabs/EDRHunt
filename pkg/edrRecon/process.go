@@ -67,7 +67,7 @@ func AnalyzeProcess(process Win32_Process) (ProcessMetaData, error) {
 		}
 	}
 
-	if cap(analysis.ScanMatch) > 0 {
+	if len(analysis.ScanMatch) > 0 {
 		return analysis, err
 	}
 	return ProcessMetaData{}, err

@@ -75,7 +75,7 @@ func (edr *EdrHunt) CheckRegistry() (RegistryMetaData, error) {
 			}
 		}
 	}
-	if cap(analysis.ScanMatch) > 0 {
+	if len(analysis.ScanMatch) > 0 {
 		return analysis, nil
 	}
 	return RegistryMetaData{}, fmt.Errorf("nothing found in registry")

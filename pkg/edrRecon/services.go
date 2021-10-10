@@ -72,7 +72,7 @@ func AnalyzeService(service Win32_Service) (ServiceMetaData, error) {
 			analysis.ScanMatch = append(analysis.ScanMatch, edr)
 		}
 	}
-	if cap(analysis.ScanMatch) > 0 {
+	if len(analysis.ScanMatch) > 0 {
 		return analysis, err
 	}
 	return ServiceMetaData{}, err

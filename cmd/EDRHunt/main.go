@@ -92,7 +92,7 @@ func scanEDRCommand(cmd *cobra.Command, args []string) {
 	for _, scanner := range scanners {
 		_, ok := scanner.Detect(systemData)
 		if ok {
-			fmt.Printf("\tDetected EDR: %s\n", scanner.Name())
+			fmt.Printf("Detected EDR: %s\n", scanner.Name())
 		}
 	}
 }
