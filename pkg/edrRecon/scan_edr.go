@@ -1,5 +1,19 @@
 package edrRecon
 
+var (
+	Scanners = []EDRDetection{
+		&CarbonBlackDetection{},
+		&CrowdstrikeDetection{},
+		&CylanceDetection{},
+		&FireEyeDetection{},
+		&KaskperskyDetection{},
+		&McafeeDetection{},
+		&SymantecDetection{},
+		&SentinelOneDetection{},
+		&WinDefenderDetection{},
+	}
+)
+
 type SystemData struct {
 	Processes []ProcessMetaData
 	Registry  RegistryMetaData

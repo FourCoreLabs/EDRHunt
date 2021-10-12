@@ -16,14 +16,6 @@ var (
 	all          bool
 	versionStr   string = "1.1"
 	versionCheck bool
-	scanners     = []edrRecon.EDRDetection{
-		&edrRecon.WinDefenderDetection{},
-		&edrRecon.KaskperskyDetection{},
-		&edrRecon.CrowdstrikeDetection{},
-		&edrRecon.CylanceDetection{},
-		&edrRecon.McafeeDetection{},
-		&edrRecon.SymantecDetection{},
-	}
 )
 
 func printBanner() {
@@ -88,7 +80,7 @@ func scanEDRCommand(cmd *cobra.Command, args []string) {
 	fmt.Println("[EDR]")
 	systemData, _ := edrRecon.GetSystemData()
 
-	for _, scanner := range scanners {
+	for _, scanner := range edrRecon.Scanners {
 		_, ok := scanner.Detect(systemData)
 		if ok {
 			fmt.Printf("Detected EDR: %s\n", scanner.Name())
