@@ -8,8 +8,6 @@ type Recon interface {
 	CheckDirectory() (string, error)
 }
 
-type EdrHunt struct{}
-
 type FileMetaData struct {
 	ProductName      string
 	OriginalFilename string

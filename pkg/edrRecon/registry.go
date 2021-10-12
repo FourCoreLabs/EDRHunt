@@ -60,7 +60,7 @@ func EnumRegistry() []string {
 	return output
 }
 
-func (edr *EdrHunt) CheckRegistry() (RegistryMetaData, error) {
+func CheckRegistry() (RegistryMetaData, error) {
 
 	output := strings.Join(EnumRegistry(), " ")
 	var analysis RegistryMetaData

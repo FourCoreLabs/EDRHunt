@@ -231,8 +231,8 @@ func AnalyzeDriver(driverFileName string, driverBaseName string) (DriverMetaData
 	return DriverMetaData{ScanMatch: make([]string, 0)}, err
 }
 
-func (edr *EdrHunt) CheckDrivers() ([]DriverMetaData, error) {
-
+// CheckDrivers return a list of drivers matching any suspicious driver names present in edrdata.go.
+func CheckDrivers() ([]DriverMetaData, error) {
 	sizeOfDriverArrayInBytes, err := GetSizeOfDriversArray()
 	if err != nil {
 		return []DriverMetaData{}, err

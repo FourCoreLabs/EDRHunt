@@ -19,7 +19,8 @@ type Win32_Service struct {
 	// StartMode string
 }
 
-func (edr *EdrHunt) CheckServices() ([]ServiceMetaData, error) {
+// CheckServices return a list of installed services matching any suspicious service names present in edrdata.go.
+func CheckServices() ([]ServiceMetaData, error) {
 	var (
 		serviceList []Win32_Service
 		errArray    []string

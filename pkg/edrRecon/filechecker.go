@@ -13,7 +13,8 @@ var (
 	err  error
 )
 
-// crashes at line 334 sometimes.
+// GetFileMetaData retuns the metadata of a file at filepath from the windows version information resources using the go-fileversion library.
+// TODO: crashes at line 334 sometimes.
 func GetFileMetaData(filepath string) (FileMetaData, error) {
 	defer func() {
 		if r := recover(); r != nil {

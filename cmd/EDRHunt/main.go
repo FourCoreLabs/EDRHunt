@@ -14,17 +14,8 @@ var (
 	services     bool
 	registry     bool
 	all          bool
-	versionStr   string = "1.0"
+	versionStr   string = "1.1"
 	versionCheck bool
-	recon        edrRecon.EdrHunt
-	scanners     = []edrRecon.EDRDetection{
-		&edrRecon.WinDefenderDetection{},
-		&edrRecon.KaskperskyDetection{},
-		&edrRecon.CrowdstrikeDetection{},
-		&edrRecon.CylanceDetection{},
-		&edrRecon.McafeeDetection{},
-		&edrRecon.SymantecDetection{},
-	}
 )
 
 func printBanner() {
@@ -57,25 +48,25 @@ func edrCommand(cmd *cobra.Command, args []string) {
 
 	if processes {
 		fmt.Println("[PROCESSES]")
-		summary, _ := recon.CheckProcesses()
+		summary, _ := edrRecon.CheckProcesses()
 		printProcess(summary)
 		fmt.Println()
 	}
 	if drivers {
 		fmt.Println("[DRIVERS]")
-		summary, _ := recon.CheckDrivers()
+		summary, _ := edrRecon.CheckDrivers()
 		printDrivers(summary)
 		fmt.Println()
 	}
 	if services {
 		fmt.Println("[SERVICES]")
-		summary, _ := recon.CheckServices()
+		summary, _ := edrRecon.CheckServices()
 		printServices(summary)
 		fmt.Println()
 	}
 	if registry {
 		fmt.Println("[REGISTRY]")
-		summary, _ := recon.CheckRegistry()
+		summary, _ := edrRecon.CheckRegistry()
 		printRegistry(summary)
 		fmt.Println()
 	}
@@ -87,9 +78,9 @@ func versionCommand(cmd *cobra.Command, args []string) {
 
 func scanEDRCommand(cmd *cobra.Command, args []string) {
 	fmt.Println("[EDR]")
-	systemData, _ := recon.GetSystemData()
+	systemData, _ := edrRecon.GetSystemData()
 
-	for _, scanner := range scanners {
+	for _, scanner := range edrRecon.Scanners {
 		_, ok := scanner.Detect(systemData)
 		if ok {
 			fmt.Printf("Detected EDR: %s\n", scanner.Name())

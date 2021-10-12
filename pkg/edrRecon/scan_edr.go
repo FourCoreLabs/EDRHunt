@@ -1,30 +1,18 @@
 package edrRecon
 
-func (e *EdrHunt) GetSystemData() (SystemData, error) {
-	var systemData SystemData
-
-	systemData.Processes, err = e.CheckProcesses()
-	if err != nil {
-		return systemData, err
+var (
+	Scanners = []EDRDetection{
+		&CarbonBlackDetection{},
+		&CrowdstrikeDetection{},
+		&CylanceDetection{},
+		&FireEyeDetection{},
+		&KaskperskyDetection{},
+		&McafeeDetection{},
+		&SymantecDetection{},
+		&SentinelOneDetection{},
+		&WinDefenderDetection{},
 	}
-
-	systemData.Services, err = e.CheckServices()
-	if err != nil {
-		return systemData, err
-	}
-
-	systemData.Registry, err = e.CheckRegistry()
-	if err != nil {
-		return systemData, err
-	}
-
-	systemData.Drivers, err = e.CheckDrivers()
-	if err != nil {
-		return systemData, err
-	}
-
-	return systemData, nil
-}
+)
 
 type SystemData struct {
 	Processes []ProcessMetaData
@@ -33,6 +21,7 @@ type SystemData struct {
 	Drivers   []DriverMetaData
 }
 
+// CountMatchesAll collects all the scanned matches of suspicious names and checks for passed keywords in the matches.
 func (s *SystemData) CountMatchesAll(keywords ...[]string) (int, bool) {
 	var match bool
 	var count int
@@ -72,6 +61,33 @@ func (s *SystemData) CountMatchesAll(keywords ...[]string) (int, bool) {
 	}
 
 	return count, match
+}
+
+// GetSystemData collects the parsed list of processes, services, drivers and registry keys to be used for EDR heuristics.
+func GetSystemData() (SystemData, error) {
+	var systemData SystemData
+
+	systemData.Processes, err = CheckProcesses()
+	if err != nil {
+		return systemData, err
+	}
+
+	systemData.Services, err = CheckServices()
+	if err != nil {
+		return systemData, err
+	}
+
+	systemData.Registry, err = CheckRegistry()
+	if err != nil {
+		return systemData, err
+	}
+
+	systemData.Drivers, err = CheckDrivers()
+	if err != nil {
+		return systemData, err
+	}
+
+	return systemData, nil
 }
 
 type EDRDetection interface {
