@@ -39,32 +39,35 @@ func makeCmd(ctx context.Context, param ...string) (*exec.Cmd, error) {
 	return cmd, nil
 }
 
-func EnumRegistry() []string {
-	ctx := context.Background()
+func EnumRegistry(ctx context.Context) []string {
 	for _, x := range RegistrySearchList {
 		paramWg.Add(1)
+
 		go func(args string) {
 			defer paramWg.Done()
+
 			stdout, err := runCMDCommand(ctx, args)
 			if err != nil {
 				return
 			}
+
 			outputLock.Lock()
 			defer outputLock.Unlock()
+
 			if len(stdout) != 0 {
 				output = append(output, string(stdout))
 			}
 		}(x)
 	}
+
 	paramWg.Wait()
 	return output
 }
 
-func CheckRegistry() (RegistryMetaData, error) {
+func CheckRegistry(ctx context.Context) (RegistryMetaData, error) {
+	var analysis RegistryMetaData = RegistryMetaData{ScanMatch: make([]string, 0)}
 
-	output := strings.Join(EnumRegistry(), " ")
-	var analysis RegistryMetaData
-	// matches = append(matches, "Scanning Registry:")
+	output := strings.Join(EnumRegistry(ctx), " ")
 	if output != "" {
 		processedOutput := strings.ToLower(output)
 		for _, match := range RegistryReconList {
@@ -75,8 +78,10 @@ func CheckRegistry() (RegistryMetaData, error) {
 			}
 		}
 	}
-	if len(analysis.ScanMatch) > 0 {
-		return analysis, nil
+
+	if len(analysis.ScanMatch) == 0 {
+		return analysis, fmt.Errorf("nothing found in registry")
 	}
-	return RegistryMetaData{}, fmt.Errorf("nothing found in registry")
+
+	return analysis, nil
 }

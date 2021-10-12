@@ -1,5 +1,7 @@
 package edrRecon
 
+import "context"
+
 var (
 	Scanners = []EDRDetection{
 		&CarbonBlackDetection{},
@@ -64,7 +66,7 @@ func (s *SystemData) CountMatchesAll(keywords ...[]string) (int, bool) {
 }
 
 // GetSystemData collects the parsed list of processes, services, drivers and registry keys to be used for EDR heuristics.
-func GetSystemData() (SystemData, error) {
+func GetSystemData(ctx context.Context) (SystemData, error) {
 	var systemData SystemData
 
 	systemData.Processes, err = CheckProcesses()
@@ -77,7 +79,7 @@ func GetSystemData() (SystemData, error) {
 		return systemData, err
 	}
 
-	systemData.Registry, err = CheckRegistry()
+	systemData.Registry, err = CheckRegistry(ctx)
 	if err != nil {
 		return systemData, err
 	}
