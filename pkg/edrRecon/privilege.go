@@ -4,6 +4,7 @@ import (
 	"os"
 )
 
+// CheckIfAdmin checks if the process has administrator privileges by trying to open the PHYSICALDRIVE0 (C:\\) raw device on Windows.
 func CheckIfAdmin() bool {
 	f, err := os.Open("\\\\.\\PHYSICALDRIVE0")
 	if err != nil {

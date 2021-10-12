@@ -20,7 +20,8 @@ type Win32_Process struct {
 	// StartMode string
 }
 
-func (edr *EdrHunt) CheckProcesses() ([]ProcessMetaData, error) {
+// CheckProcesses returns a list of processes matching any suspicious running process names present in edrdata.go.
+func CheckProcesses() ([]ProcessMetaData, error) {
 	var (
 		processList []Win32_Process
 		errArray    []string
@@ -56,9 +57,11 @@ func AnalyzeProcess(process Win32_Process) (ProcessMetaData, error) {
 		ProcessPID:         fmt.Sprint(process.ProcessId),
 		ProcessParentPID:   fmt.Sprint(process.ParentProcessId),
 	}
+
 	if analysis.ProcessPath != "" {
 		analysis.ProcessExeMetaData, err = GetFileMetaData(analysis.ProcessPath)
 	}
+
 	for _, edr := range EdrList {
 		if strings.Contains(
 			strings.ToLower(fmt.Sprint(analysis)),
