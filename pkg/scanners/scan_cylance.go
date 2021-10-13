@@ -1,4 +1,6 @@
-package edrRecon
+package scanners
+
+import "github.com/FourCoreLabs/EDRHunt/pkg/resources"
 
 type CylanceDetection struct{}
 
@@ -6,8 +8,8 @@ func (w *CylanceDetection) Name() string {
 	return "Cylance Smart Antivirus"
 }
 
-func (w *CylanceDetection) Type() EDRType {
-	return CylanceEDR
+func (w *CylanceDetection) Type() resources.EDRType {
+	return resources.CylanceEDR
 }
 
 var CylanceHeuristic = []string{
@@ -17,11 +19,11 @@ var CylanceHeuristic = []string{
 	"Cylance2",
 }
 
-func (w *CylanceDetection) Detect(data SystemData) (EDRType, bool) {
+func (w *CylanceDetection) Detect(data resources.SystemData) (resources.EDRType, bool) {
 	_, ok := data.CountMatchesAll(CylanceHeuristic)
 	if !ok {
 		return "", false
 	}
 
-	return CylanceEDR, true
+	return resources.CylanceEDR, true
 }

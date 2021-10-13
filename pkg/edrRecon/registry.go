@@ -7,6 +7,8 @@ import (
 	"strings"
 	"sync"
 	"syscall"
+
+	"github.com/FourCoreLabs/EDRHunt/pkg/resources"
 )
 
 var (
@@ -64,8 +66,8 @@ func EnumRegistry(ctx context.Context) []string {
 	return output
 }
 
-func CheckRegistry(ctx context.Context) (RegistryMetaData, error) {
-	var analysis RegistryMetaData = RegistryMetaData{ScanMatch: make([]string, 0)}
+func CheckRegistry(ctx context.Context) (resources.RegistryMetaData, error) {
+	var analysis resources.RegistryMetaData = resources.RegistryMetaData{ScanMatch: make([]string, 0)}
 
 	output := strings.Join(EnumRegistry(ctx), " ")
 	if output != "" {

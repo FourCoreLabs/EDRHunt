@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/FourCoreLabs/EDRHunt/pkg/resources"
 	"github.com/StackExchange/wmi"
 	"github.com/hashicorp/go-multierror"
 )
@@ -21,11 +22,11 @@ type Win32_Service struct {
 }
 
 // CheckServices return a list of installed services matching any suspicious service names present in edrdata.go.
-func CheckServices() ([]ServiceMetaData, error) {
+func CheckServices() ([]resources.ServiceMetaData, error) {
 	var (
 		serviceList []Win32_Service
 		multiErr    error
-		summary     []ServiceMetaData
+		summary     []resources.ServiceMetaData
 	)
 
 	query := wmi.CreateQuery(&serviceList, "")
@@ -52,8 +53,8 @@ func CheckServices() ([]ServiceMetaData, error) {
 	return summary, multiErr
 }
 
-func AnalyzeService(service Win32_Service) (ServiceMetaData, error) {
-	analysis := ServiceMetaData{
+func AnalyzeService(service Win32_Service) (resources.ServiceMetaData, error) {
+	analysis := resources.ServiceMetaData{
 		ServiceName:        service.Name,
 		ServiceDisplayName: service.DisplayName,
 		ServiceDescription: service.Description,

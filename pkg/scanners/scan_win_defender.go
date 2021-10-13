@@ -1,4 +1,6 @@
-package edrRecon
+package scanners
+
+import "github.com/FourCoreLabs/EDRHunt/pkg/resources"
 
 type WinDefenderDetection struct{}
 
@@ -6,8 +8,8 @@ func (w *WinDefenderDetection) Name() string {
 	return "Windows Defender"
 }
 
-func (w *WinDefenderDetection) Type() EDRType {
-	return WinDefenderEDR
+func (w *WinDefenderDetection) Type() resources.EDRType {
+	return resources.WinDefenderEDR
 }
 
 var WinDefenderProcessHeuristic = []string{
@@ -34,11 +36,11 @@ var WinDefenderRegistryHeuristic = []string{
 // 			- services list contains WinDefenderServicesHeuristic keywords
 // 			- registry list contains WinDefenderRegistryHeuristic keywords
 // 			- driver list contains WinDefenderDriverHeuristic keywords
-func (w *WinDefenderDetection) Detect(data SystemData) (EDRType, bool) {
+func (w *WinDefenderDetection) Detect(data resources.SystemData) (resources.EDRType, bool) {
 	_, ok := data.CountMatchesAll(WinDefenderDriverHeuristic, WinDefenderProcessHeuristic, WinDefenderRegistryHeuristic, WinDefenderServicesHeuristic)
 	if !ok {
 		return "", false
 	}
 
-	return WinDefenderEDR, true
+	return resources.WinDefenderEDR, true
 }

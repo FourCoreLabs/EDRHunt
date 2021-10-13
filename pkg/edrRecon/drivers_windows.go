@@ -8,6 +8,8 @@ import (
 	"unicode/utf16"
 	"unsafe"
 
+	"github.com/FourCoreLabs/EDRHunt/pkg/resources"
+
 	"github.com/hashicorp/go-multierror"
 )
 
@@ -165,10 +167,10 @@ func GetDriverBaseName(driverAddrs uintptr) (string, error) {
 	return syscall.UTF16ToString(data), nil
 }
 
-func IterateOverDrivers(numberOfDrivers uint, driverAddrs []uintptr) ([]DriverMetaData, error) {
+func IterateOverDrivers(numberOfDrivers uint, driverAddrs []uintptr) ([]resources.DriverMetaData, error) {
 	var (
 		multiErr error
-		summary  []DriverMetaData = make([]DriverMetaData, 0)
+		summary  []resources.DriverMetaData = make([]resources.DriverMetaData, 0)
 	)
 
 	for _, addr := range driverAddrs {
@@ -201,7 +203,7 @@ func IterateOverDrivers(numberOfDrivers uint, driverAddrs []uintptr) ([]DriverMe
 	return summary, multiErr
 }
 
-func AnalyzeDriver(driverFileName string, driverBaseName string) (DriverMetaData, error) {
+func AnalyzeDriver(driverFileName string, driverBaseName string) (resources.DriverMetaData, error) {
 	fixedDriverPath := strings.ToLower(driverFileName)
 	fixedDriverPath = strings.Replace(fixedDriverPath, `\systemroot\`, `c:\windows\`, -1)
 	if strings.HasPrefix(fixedDriverPath, `\windows\`) {
@@ -210,7 +212,7 @@ func AnalyzeDriver(driverFileName string, driverBaseName string) (DriverMetaData
 		fixedDriverPath = strings.Replace(fixedDriverPath, `\??\`, ``, -1)
 	}
 
-	analysis := DriverMetaData{
+	analysis := resources.DriverMetaData{
 		DriverBaseName: driverBaseName,
 		DriverFilePath: fixedDriverPath,
 		ScanMatch:      make([]string, 0),
@@ -231,8 +233,8 @@ func AnalyzeDriver(driverFileName string, driverBaseName string) (DriverMetaData
 }
 
 // CheckDrivers return a list of drivers matching any suspicious driver names present in edrdata.go.
-func CheckDrivers() ([]DriverMetaData, error) {
-	var drivers []DriverMetaData = make([]DriverMetaData, 0)
+func CheckDrivers() ([]resources.DriverMetaData, error) {
+	var drivers []resources.DriverMetaData = make([]resources.DriverMetaData, 0)
 
 	sizeOfDriverArrayInBytes, err := GetSizeOfDriversArray()
 	if err != nil {

@@ -1,4 +1,4 @@
-package edrRecon
+package resources
 
 type Recon interface {
 	CheckProcesses() ([]ProcessMetaData, error)
