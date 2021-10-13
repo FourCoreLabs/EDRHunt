@@ -6,6 +6,8 @@ import (
 	"os"
 
 	"github.com/FourCoreLabs/EDRHunt/pkg/edrRecon"
+	"github.com/FourCoreLabs/EDRHunt/pkg/resources"
+	"github.com/FourCoreLabs/EDRHunt/pkg/scanners"
 	"github.com/spf13/cobra"
 )
 
@@ -81,7 +83,7 @@ func scanEDRCommand(cmd *cobra.Command, args []string) {
 	fmt.Println("[EDR]")
 	systemData, _ := edrRecon.GetSystemData(context.Background())
 
-	for _, scanner := range edrRecon.Scanners {
+	for _, scanner := range scanners.Scanners {
 		_, ok := scanner.Detect(systemData)
 		if ok {
 			fmt.Printf("Detected EDR: %s\n", scanner.Name())
@@ -123,7 +125,7 @@ var allCmd = &cobra.Command{
 	Run:   allCommand,
 }
 
-func printProcess(summary []edrRecon.ProcessMetaData) {
+func printProcess(summary []resources.ProcessMetaData) {
 	for _, process := range summary {
 		fmt.Printf("Suspicious Process Name: %s\n", process.ProcessName)
 		fmt.Printf("Description: %s\n", process.ProcessDescription)
@@ -138,7 +140,7 @@ func printProcess(summary []edrRecon.ProcessMetaData) {
 	}
 }
 
-func printServices(summary []edrRecon.ServiceMetaData) {
+func printServices(summary []resources.ServiceMetaData) {
 	for _, service := range summary {
 		fmt.Printf("Suspicious Service Name: %s\n", service.ServiceName)
 		fmt.Printf("Display Name: %s\n", service.ServiceDisplayName)
@@ -152,7 +154,7 @@ func printServices(summary []edrRecon.ServiceMetaData) {
 	}
 }
 
-func printRegistry(summary edrRecon.RegistryMetaData) {
+func printRegistry(summary resources.RegistryMetaData) {
 	fmt.Println("Scanning registry: ")
 	for _, match := range summary.ScanMatch {
 		fmt.Printf("\t%s\n", match)
@@ -160,7 +162,7 @@ func printRegistry(summary edrRecon.RegistryMetaData) {
 	fmt.Println()
 }
 
-func printDrivers(summary []edrRecon.DriverMetaData) {
+func printDrivers(summary []resources.DriverMetaData) {
 	for _, driver := range summary {
 		fmt.Printf("Suspicious Driver Module: %s\n", driver.DriverBaseName)
 		fmt.Printf("Driver FilePath: %s\n", driver.DriverFilePath)

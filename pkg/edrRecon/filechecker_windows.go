@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/FourCoreLabs/EDRHunt/pkg/resources"
 	"github.com/bi-zone/go-fileversion"
 )
 
@@ -14,7 +15,7 @@ var (
 
 // GetFileMetaData retuns the metadata of a file at filepath from the windows version information resources using the go-fileversion library.
 // TODO: crashes at line 334 sometimes.
-func GetFileMetaData(filepath string) (FileMetaData, error) {
+func GetFileMetaData(filepath string) (resources.FileMetaData, error) {
 	defer func() {
 		if r := recover(); r != nil {
 			return
@@ -26,7 +27,7 @@ func GetFileMetaData(filepath string) (FileMetaData, error) {
 	filepath = strings.Replace(filepath, "\"", "", -1)
 
 	if filepath == "" {
-		return FileMetaData{}, errors.New("empty filepath")
+		return resources.FileMetaData{}, errors.New("empty filepath")
 	}
 
 	file, err = fileversion.New(filepath)
@@ -35,14 +36,14 @@ func GetFileMetaData(filepath string) (FileMetaData, error) {
 			filepathMod := strings.Replace(filepath, `c\windows\system32`, `c:\Windows\Sysnative`, -1)
 			file, err = fileversion.New(filepathMod)
 			if err != nil {
-				return FileMetaData{}, fmt.Errorf("cannot find resource: %s", filepath)
+				return resources.FileMetaData{}, fmt.Errorf("cannot find resource: %s", filepath)
 			}
 		}
 	}
 
 	// fileInfoStr := fmt.Sprintf("\n\tProductName: %s\n\tOriginalFileName: %s\n\tInternalFileName: %s\n\tCompany Name: %s\n\tFileDescription: %s\n\tProductVersion: %s\n\tComments: %s\n\tLegalCopyright: %s\n\tLegalTrademarks: %s", file.ProductName(), file.OriginalFilename(), file.InternalName(), file.CompanyName(), file.FileDescription(), file.ProductVersion(), file.Comments(), file.LegalCopyright(), file.LegalTrademarks())
 
-	return FileMetaData{
+	return resources.FileMetaData{
 		ProductName:      file.ProductName(),
 		OriginalFilename: file.OriginalFilename(),
 		InternalFileName: file.InternalName(),
@@ -55,7 +56,7 @@ func GetFileMetaData(filepath string) (FileMetaData, error) {
 	}, nil
 }
 
-func FileMetaDataParser(file FileMetaData) string {
+func FileMetaDataParser(file resources.FileMetaData) string {
 	if file.ProductName == "" {
 		return ""
 	}

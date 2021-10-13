@@ -1,4 +1,6 @@
-package edrRecon
+package scanners
+
+import "github.com/FourCoreLabs/EDRHunt/pkg/resources"
 
 type McafeeDetection struct{}
 
@@ -6,8 +8,8 @@ func (w *McafeeDetection) Name() string {
 	return "McAfee MVISION Endpoint Detection and Response"
 }
 
-func (w *McafeeDetection) Type() EDRType {
-	return McafeeEDR
+func (w *McafeeDetection) Type() resources.EDRType {
+	return resources.McafeeEDR
 }
 
 var McafeeHeuristic = []string{
@@ -18,11 +20,11 @@ var McafeeHeuristic = []string{
 	"OASPolicyName",
 }
 
-func (w *McafeeDetection) Detect(data SystemData) (EDRType, bool) {
+func (w *McafeeDetection) Detect(data resources.SystemData) (resources.EDRType, bool) {
 	_, ok := data.CountMatchesAll(McafeeHeuristic)
 	if !ok {
 		return "", false
 	}
 
-	return McafeeEDR, true
+	return resources.McafeeEDR, true
 }

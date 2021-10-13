@@ -1,4 +1,6 @@
-package edrRecon
+package scanners
+
+import "github.com/FourCoreLabs/EDRHunt/pkg/resources"
 
 type SymantecDetection struct{}
 
@@ -6,8 +8,8 @@ func (w *SymantecDetection) Name() string {
 	return "Symantec Endpoint Security"
 }
 
-func (w *SymantecDetection) Type() EDRType {
-	return SymantecEDR
+func (w *SymantecDetection) Type() resources.EDRType {
+	return resources.SymantecEDR
 }
 
 var SymantecHeuristic = []string{
@@ -18,11 +20,11 @@ var SymantecHeuristic = []string{
 	"Symantec Endpoint Protection\\",
 }
 
-func (w *SymantecDetection) Detect(data SystemData) (EDRType, bool) {
+func (w *SymantecDetection) Detect(data resources.SystemData) (resources.EDRType, bool) {
 	_, ok := data.CountMatchesAll(SymantecHeuristic)
 	if !ok {
 		return "", false
 	}
 
-	return SymantecEDR, true
+	return resources.SymantecEDR, true
 }

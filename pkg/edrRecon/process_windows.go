@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/FourCoreLabs/EDRHunt/pkg/resources"
 	"github.com/StackExchange/wmi"
 	"github.com/hashicorp/go-multierror"
 )
@@ -22,11 +23,11 @@ type Win32_Process struct {
 }
 
 // CheckProcesses returns a list of processes matching any suspicious running process names present in edrdata.go.
-func CheckProcesses() ([]ProcessMetaData, error) {
+func CheckProcesses() ([]resources.ProcessMetaData, error) {
 	var (
 		processList []Win32_Process
 		multiErr    error
-		summary     []ProcessMetaData = make([]ProcessMetaData, 0)
+		summary     []resources.ProcessMetaData = make([]resources.ProcessMetaData, 0)
 	)
 
 	query := wmi.CreateQuery(&processList, "")
@@ -54,8 +55,8 @@ func CheckProcesses() ([]ProcessMetaData, error) {
 	return summary, multiErr
 }
 
-func AnalyzeProcess(process Win32_Process) (ProcessMetaData, error) {
-	analysis := ProcessMetaData{
+func AnalyzeProcess(process Win32_Process) (resources.ProcessMetaData, error) {
+	analysis := resources.ProcessMetaData{
 		ProcessName:        process.Name,
 		ProcessPath:        process.ExecutablePath,
 		ProcessDescription: process.Description,

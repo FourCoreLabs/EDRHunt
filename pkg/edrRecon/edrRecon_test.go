@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"testing"
+
+	"github.com/FourCoreLabs/EDRHunt/pkg/scanners"
 )
 
 func TestCheckDrivers(t *testing.T) {
@@ -100,7 +102,7 @@ func TestEDRScanner(t *testing.T) {
 		return
 	}
 
-	for _, scanner := range Scanners {
+	for _, scanner := range scanners.Scanners {
 		_, ok := scanner.Detect(systemData)
 		if ok {
 			result = append(result, EDRHuntResult{
