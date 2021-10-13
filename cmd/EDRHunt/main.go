@@ -190,6 +190,7 @@ func init() {
 }
 
 func main() {
+	fmt.Print("\033[H\033[2J")
 	printBanner()
 	Execute()
 }
