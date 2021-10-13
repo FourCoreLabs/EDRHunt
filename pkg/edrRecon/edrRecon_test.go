@@ -86,3 +86,28 @@ func TestDeObfNames(t *testing.T) {
 		fmt.Println(name)
 	}
 }
+
+type EDRHuntResult struct {
+	Type string `json:"id"`
+}
+
+func TestEDRScanner(t *testing.T) {
+	var result []EDRHuntResult = make([]EDRHuntResult, 0)
+
+	systemData, err := GetSystemData(context.TODO())
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	for _, scanner := range Scanners {
+		_, ok := scanner.Detect(systemData)
+		if ok {
+			result = append(result, EDRHuntResult{
+				Type: string(scanner.Type()),
+			})
+		}
+	}
+
+	fmt.Println(result)
+}

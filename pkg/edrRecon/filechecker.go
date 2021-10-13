@@ -10,7 +10,6 @@ import (
 
 var (
 	file fileversion.Info
-	err  error
 )
 
 // GetFileMetaData retuns the metadata of a file at filepath from the windows version information resources using the go-fileversion library.
@@ -21,6 +20,8 @@ func GetFileMetaData(filepath string) (FileMetaData, error) {
 			return
 		}
 	}()
+
+	var err error
 
 	filepath = strings.Replace(filepath, "\"", "", -1)
 

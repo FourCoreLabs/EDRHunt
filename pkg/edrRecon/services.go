@@ -79,5 +79,5 @@ func AnalyzeService(service Win32_Service) (ServiceMetaData, error) {
 		}
 	}
 
-	return analysis, err
+	return analysis, nil
 }
