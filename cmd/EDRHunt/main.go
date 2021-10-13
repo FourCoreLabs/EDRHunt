@@ -15,7 +15,7 @@ var (
 	services     bool
 	registry     bool
 	all          bool
-	versionStr   string = "1.1"
+	versionStr   string = "1.2"
 	versionCheck bool
 )
 
