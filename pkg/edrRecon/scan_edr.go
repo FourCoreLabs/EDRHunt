@@ -70,6 +70,7 @@ func (s *SystemData) CountMatchesAll(keywords ...[]string) (int, bool) {
 
 // GetSystemData collects the parsed list of processes, services, drivers and registry keys to be used for EDR heuristics.
 func GetSystemData(ctx context.Context) (SystemData, error) {
+	var err error
 	var systemData SystemData
 
 	systemData.Processes, err = CheckProcesses()
