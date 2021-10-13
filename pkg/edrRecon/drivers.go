@@ -7,6 +7,8 @@ import (
 	"syscall"
 	"unicode/utf16"
 	"unsafe"
+
+	"github.com/hashicorp/go-multierror"
 )
 
 var (
@@ -163,43 +165,43 @@ func GetDriverBaseName(driverAddrs uintptr) (string, error) {
 	return syscall.UTF16ToString(data), nil
 }
 
-func IterateOverDrivers(numberOfDrivers uint, driverAddrs []uintptr) ([]DriverMetaData, []string) {
-
+func IterateOverDrivers(numberOfDrivers uint, driverAddrs []uintptr) ([]DriverMetaData, error) {
 	var (
-		// counter  uint
-		errArray []string
+		multiErr error
 		summary  []DriverMetaData = make([]DriverMetaData, 0)
 	)
 
 	for _, addr := range driverAddrs {
 		driverFileName, err := GetDriverFileName(addr)
 		if err != nil {
-			errArray = append(errArray, fmt.Sprintf("%v", err))
+			multiErr = multierror.Append(multiErr, err)
 			continue
 		}
+
 		driverBaseName, err := GetDriverBaseName(addr)
 		if err != nil {
-			errArray = append(errArray, fmt.Sprintf("%v", err))
+			multiErr = multierror.Append(multiErr, err)
 			continue
 		}
+
+		if driverBaseName == "" {
+			continue
+		}
+
 		output, err := AnalyzeDriver(driverFileName, driverBaseName)
 		if err != nil {
-			errArray = append(errArray, fmt.Sprintf("%v", err))
+			multiErr = multierror.Append(multiErr, err)
 		}
-		if output.DriverBaseName == "" {
-			continue
+
+		if len(output.ScanMatch) > 0 {
+			summary = append(summary, output)
 		}
-		summary = append(summary, output)
 	}
 
-	// for counter = 0; counter < numberOfDrivers; counter++ {
-	// }
-	return summary, errArray
+	return summary, multiErr
 }
 
 func AnalyzeDriver(driverFileName string, driverBaseName string) (DriverMetaData, error) {
-	var err error
-
 	fixedDriverPath := strings.ToLower(driverFileName)
 	fixedDriverPath = strings.Replace(fixedDriverPath, `\systemroot\`, `c:\windows\`, -1)
 	if strings.HasPrefix(fixedDriverPath, `\windows\`) {
@@ -207,16 +209,17 @@ func AnalyzeDriver(driverFileName string, driverBaseName string) (DriverMetaData
 	} else if strings.HasPrefix(fixedDriverPath, `\??\`) {
 		fixedDriverPath = strings.Replace(fixedDriverPath, `\??\`, ``, -1)
 	}
+
 	analysis := DriverMetaData{
 		DriverBaseName: driverBaseName,
 		DriverFilePath: fixedDriverPath,
 		ScanMatch:      make([]string, 0),
 	}
 
-	analysis.DriverSysMetaData, err = GetFileMetaData(fixedDriverPath)
+	analysis.DriverSysMetaData, _ = GetFileMetaData(fixedDriverPath)
 
 	for _, edr := range EdrList {
-		//regexp as alternate but saving another import. No bully.
+		// regexp as alternate but saving another import. No bully.
 		if strings.Contains(
 			strings.ToLower(fmt.Sprint(analysis)),
 			strings.ToLower(edr)) {
@@ -224,33 +227,32 @@ func AnalyzeDriver(driverFileName string, driverBaseName string) (DriverMetaData
 		}
 	}
 
-	if len(analysis.ScanMatch) > 0 {
-		return analysis, err
-	}
-
-	return DriverMetaData{ScanMatch: make([]string, 0)}, err
+	return analysis, nil
 }
 
 // CheckDrivers return a list of drivers matching any suspicious driver names present in edrdata.go.
 func CheckDrivers() ([]DriverMetaData, error) {
+	var drivers []DriverMetaData = make([]DriverMetaData, 0)
+
 	sizeOfDriverArrayInBytes, err := GetSizeOfDriversArray()
 	if err != nil {
-		return []DriverMetaData{}, err
+		return drivers, err
 	}
 
 	sizeOfOneDriverAddress := uint(unsafe.Sizeof(uintptr(0)))
+
 	numberOfDrivers = uint(sizeOfDriverArrayInBytes) / sizeOfOneDriverAddress
 	driverAddrs = make([]uintptr, numberOfDrivers)
 
 	success := EnumDeviceDrivers(driverAddrs, DWORD(sizeOfDriverArrayInBytes), &sizeOfDriverArrayInBytes)
 	if !success {
-		return []DriverMetaData{}, fmt.Errorf("failed to enumerate device drivers, error code: %d", syscall.GetLastError())
+		return drivers, fmt.Errorf("failed to enumerate device drivers, error code: %w", syscall.GetLastError())
 	}
 
-	// filterErrArray optional || Don't bully.
-	summary, filterErrArray := IterateOverDrivers(numberOfDrivers, driverAddrs)
-	if strings.TrimSpace(strings.Join(filterErrArray, "")) != "" {
-		return summary, fmt.Errorf("%s", filterErrArray)
+	drivers, err = IterateOverDrivers(numberOfDrivers, driverAddrs)
+	if err != nil {
+		return drivers, err
 	}
-	return summary, nil
+
+	return drivers, nil
 }

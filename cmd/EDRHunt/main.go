@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"os"
 
@@ -66,7 +67,7 @@ func edrCommand(cmd *cobra.Command, args []string) {
 	}
 	if registry {
 		fmt.Println("[REGISTRY]")
-		summary, _ := edrRecon.CheckRegistry()
+		summary, _ := edrRecon.CheckRegistry(context.Background())
 		printRegistry(summary)
 		fmt.Println()
 	}
@@ -78,7 +79,7 @@ func versionCommand(cmd *cobra.Command, args []string) {
 
 func scanEDRCommand(cmd *cobra.Command, args []string) {
 	fmt.Println("[EDR]")
-	systemData, _ := edrRecon.GetSystemData()
+	systemData, _ := edrRecon.GetSystemData(context.Background())
 
 	for _, scanner := range edrRecon.Scanners {
 		_, ok := scanner.Detect(systemData)

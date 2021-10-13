@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/StackExchange/wmi"
+	"github.com/hashicorp/go-multierror"
 )
 
 type Win32_Service struct {
@@ -23,32 +24,35 @@ type Win32_Service struct {
 func CheckServices() ([]ServiceMetaData, error) {
 	var (
 		serviceList []Win32_Service
-		errArray    []string
+		multiErr    error
 		summary     []ServiceMetaData
 	)
 
 	query := wmi.CreateQuery(&serviceList, "")
-	err := wmi.Query(query, &serviceList)
-	if err != nil {
-		return []ServiceMetaData{}, err
-	}
-	for _, service := range serviceList {
-		output, err := AnalyzeService(service)
-		if err != nil {
-			errArray = append(errArray, fmt.Sprintf("%v", err))
-		}
-		if output.ServiceName == "" {
-			continue
-		}
-		summary = append(summary, output)
+
+	if err := wmi.Query(query, &serviceList); err != nil {
+		return summary, err
 	}
 
-	return summary, fmt.Errorf("%v", errArray)
+	for _, service := range serviceList {
+		if service.Name == "" {
+			continue
+		}
+
+		output, err := AnalyzeService(service)
+		if err != nil {
+			multiErr = multierror.Append(multiErr, err)
+		}
+
+		if len(output.ScanMatch) > 0 {
+			summary = append(summary, output)
+		}
+	}
+
+	return summary, multiErr
 }
 
 func AnalyzeService(service Win32_Service) (ServiceMetaData, error) {
-
-	var err error
 	analysis := ServiceMetaData{
 		ServiceName:        service.Name,
 		ServiceDisplayName: service.DisplayName,
@@ -58,11 +62,12 @@ func AnalyzeService(service Win32_Service) (ServiceMetaData, error) {
 		ServiceState:       service.State,
 		ServiceProcessId:   fmt.Sprint(service.ProcessId),
 	}
+
 	if analysis.ServicePathName != "" {
 		trim := strings.Index(analysis.ServicePathName, ".exe")
 		if trim > 0 {
 			servicePath := analysis.ServicePathName[:trim] + ".exe"
-			analysis.ServiceExeMetaData, err = GetFileMetaData(servicePath)
+			analysis.ServiceExeMetaData, _ = GetFileMetaData(servicePath)
 		}
 	}
 
@@ -73,8 +78,6 @@ func AnalyzeService(service Win32_Service) (ServiceMetaData, error) {
 			analysis.ScanMatch = append(analysis.ScanMatch, edr)
 		}
 	}
-	if len(analysis.ScanMatch) > 0 {
-		return analysis, err
-	}
-	return ServiceMetaData{}, err
+
+	return analysis, err
 }

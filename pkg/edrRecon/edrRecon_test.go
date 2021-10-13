@@ -1,6 +1,7 @@
 package edrRecon
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"testing"
@@ -19,7 +20,7 @@ func TestCheckDrivers(t *testing.T) {
 }
 
 func TestCheckRegistry(t *testing.T) {
-	summary, err := CheckRegistry()
+	summary, err := CheckRegistry(context.TODO())
 	fmt.Println("Scanning registry: ")
 	for _, match := range summary.ScanMatch {
 		fmt.Printf("\t%s\n", match)

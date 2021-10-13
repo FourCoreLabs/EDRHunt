@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/StackExchange/wmi"
+	"github.com/hashicorp/go-multierror"
 )
 
 type Win32_Process struct {
@@ -24,30 +25,36 @@ type Win32_Process struct {
 func CheckProcesses() ([]ProcessMetaData, error) {
 	var (
 		processList []Win32_Process
-		errArray    []string
-		summary     []ProcessMetaData
+		multiErr    error
+		summary     []ProcessMetaData = make([]ProcessMetaData, 0)
 	)
+
 	query := wmi.CreateQuery(&processList, "")
-	err := wmi.Query(query, &processList)
-	if err != nil {
-		return []ProcessMetaData{}, err
-	}
-	for _, process := range processList {
-		output, err := AnalyzeProcess(process)
-		if err != nil {
-			errArray = append(errArray, fmt.Sprintf("%v", err))
-		}
-		if output.ProcessName == "" {
-			continue
-		}
-		summary = append(summary, output)
+
+	if err := wmi.Query(query, &processList); err != nil {
+		return summary, err
 	}
 
-	return summary, fmt.Errorf("%v", errArray)
+	for _, process := range processList {
+		if process.Name == "" {
+			continue
+		}
+
+		output, err := AnalyzeProcess(process)
+		if err != nil {
+			multiErr = multierror.Append(multiErr, err)
+			continue
+		}
+
+		if len(output.ScanMatch) > 0 {
+			summary = append(summary, output)
+		}
+	}
+
+	return summary, multiErr
 }
 
 func AnalyzeProcess(process Win32_Process) (ProcessMetaData, error) {
-	var err error
 	analysis := ProcessMetaData{
 		ProcessName:        process.Name,
 		ProcessPath:        process.ExecutablePath,
@@ -59,7 +66,7 @@ func AnalyzeProcess(process Win32_Process) (ProcessMetaData, error) {
 	}
 
 	if analysis.ProcessPath != "" {
-		analysis.ProcessExeMetaData, err = GetFileMetaData(analysis.ProcessPath)
+		analysis.ProcessExeMetaData, _ = GetFileMetaData(analysis.ProcessPath)
 	}
 
 	for _, edr := range EdrList {
@@ -70,8 +77,5 @@ func AnalyzeProcess(process Win32_Process) (ProcessMetaData, error) {
 		}
 	}
 
-	if len(analysis.ScanMatch) > 0 {
-		return analysis, err
-	}
-	return ProcessMetaData{}, err
+	return analysis, nil
 }
