@@ -13,5 +13,6 @@ var (
 		&SymantecDetection{},
 		&SentinelOneDetection{},
 		&WinDefenderDetection{},
+		&ElasticAgentDetection{},
 	}
 )

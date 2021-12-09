@@ -284,6 +284,11 @@ var EdrList = []string{
 	"threat",
 	"xagt.exe",
 	"xagtnotif.exe",
+	"Elastic Agent",
+	"elastic-agent.exe",
+	"elastic-endpoint.exe",
+	"elastic-endpoint-driver",
+	"ElasticEndpoint",
 }
 
 var ReconList = []string{
@@ -300,6 +305,7 @@ var ReconList = []string{
 	"SystemProductName",
 	"LocalAccountTokenFilterPolicy",
 	"LsaCfgFlags",
+	"elastic",
 }
 
 var McafeeList = []string{
