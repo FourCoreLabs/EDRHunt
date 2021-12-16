@@ -144,6 +144,7 @@ EDR Detections Currently Available
 - Carbon Black
 - SentinelOne
 - FireEye
+- Elastic EDR
 
 More to be added soon.
 
