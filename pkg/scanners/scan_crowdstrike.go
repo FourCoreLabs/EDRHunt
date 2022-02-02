@@ -9,7 +9,7 @@ func (w *CrowdstrikeDetection) Name() string {
 }
 
 func (w *CrowdstrikeDetection) Type() resources.EDRType {
-	return resources.SymantecEDR
+	return resources.CrowdstrikeEDR
 }
 
 var CrowdstrikeHeuristic = []string{
