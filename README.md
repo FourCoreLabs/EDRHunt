@@ -2,7 +2,7 @@
 
 [![goreleaser](https://github.com/FourCoreLabs/EDRHunt/actions/workflows/goreleaser.yml/badge.svg)](https://github.com/FourCoreLabs/EDRHunt/actions/workflows/goreleaser.yml)
 
-EDRHunt scans Windows services, drivers, processes, registry for installed EDRs (Endpoint Detection And Response). Read more about EDRHunt [here](https://www.fourcore.vision/blogs/Red-Team-Adventure:-Digging-into-Windows-Endpoints-for-EDRs-and-profit-cUf).
+EDRHunt scans Windows services, drivers, processes, registry for installed EDRs (Endpoint Detection And Response). Read more about EDRHunt [here](https://www.fourcore.vision/blogs/red-team-adventure-windows-endpoints-edr-edrhunt).
 
 [![asciicast](https://asciinema.org/a/P8i99w9mI497qUPTNbdwYWcwQ.svg)](https://asciinema.org/a/P8i99w9mI497qUPTNbdwYWcwQ)
 
@@ -144,6 +144,7 @@ EDR Detections Currently Available
 - Carbon Black
 - SentinelOne
 - FireEye
+- Elastic EDR
 
 More to be added soon.
 
