@@ -5,8 +5,8 @@ import (
 	"strings"
 
 	"github.com/FourCoreLabs/EDRHunt/pkg/resources"
-	"github.com/StackExchange/wmi"
 	"github.com/hashicorp/go-multierror"
+	"github.com/yusufpapurcu/wmi"
 )
 
 type Win32_Service struct {
