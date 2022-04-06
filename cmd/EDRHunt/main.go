@@ -29,7 +29,7 @@ func printBanner() {
  / /___/ /_/ / _, _/  / __  / /_/ / /|  / / /    
 /_____/_____/_/ |_|  /_/ /_/\____/_/ |_/ /_/     																				
 
-FourCore Labs (https://fourcore.vision) | Version: %v
+FourCore Labs (https://fourcore.io) | Version: %v
 
 `, versionStr)
 }
