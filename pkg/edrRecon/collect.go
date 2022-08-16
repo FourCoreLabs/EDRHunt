@@ -7,7 +7,7 @@ import (
 	"github.com/FourCoreLabs/EDRHunt/pkg/resources"
 )
 
-// GetSystemData collects the parsed list of processes, services, drivers and registry keys to be used for EDR heuristics.
+// GetSystemData collects the parsed list of processes, services, drivers, wmi and registry keys to be used for EDR heuristics.
 func GetSystemData(ctx context.Context) (resources.SystemData, error) {
 	var err error
 	var systemData resources.SystemData
@@ -32,5 +32,9 @@ func GetSystemData(ctx context.Context) (resources.SystemData, error) {
 		return systemData, fmt.Errorf("failed to check drivers: %w", err)
 	}
 
+	systemData.AVProviders, err = CheckAVWmiRepo()
+	if err != nil {
+		return systemData, fmt.Errorf("failed to check wmi repo: %w", err)
+	}
 	return systemData, nil
 }

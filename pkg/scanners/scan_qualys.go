@@ -1,0 +1,29 @@
+package scanners
+
+import "github.com/FourCoreLabs/EDRHunt/pkg/resources"
+
+type QualysDetection struct{}
+
+func (w *QualysDetection) Name() string {
+	return "Qualys Cloud Agent EDR"
+}
+
+func (w *QualysDetection) Type() resources.EDRType {
+	return resources.QualysEDR
+}
+
+var QualysHeuristic = []string{
+	"Qualys",
+	"QualysAgent.exe",
+	"qualysagent.exe",
+	"qualys",
+}
+
+func (w *QualysDetection) Detect(data resources.SystemData) (resources.EDRType, bool) {
+	_, ok := data.CountMatchesAll(QualysHeuristic)
+	if !ok {
+		return "", false
+	}
+
+	return resources.QualysEDR, true
+}

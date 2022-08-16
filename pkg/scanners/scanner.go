@@ -14,5 +14,8 @@ var (
 		&SentinelOneDetection{},
 		&WinDefenderDetection{},
 		&ElasticAgentDetection{},
+		&ESETEDRDetection{},
+		&QualysDetection{},
+		&TrendMicroDetection{},
 	}
 )

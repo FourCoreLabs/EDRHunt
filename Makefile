@@ -10,3 +10,5 @@ run:
 	go run -ldflags="-w -s" github.com/FourCoreLabs/EDRHunt/cmd/EDRHunt all
 drivers:
 	go run -ldflags="-w -s" github.com/FourCoreLabs/EDRHunt/cmd/EDRHunt -d
+avwmi:
+	go run -ldflags="-w -s" github.com/FourCoreLabs/EDRHunt/cmd/EDRHunt -w

@@ -5,10 +5,11 @@ import (
 )
 
 type SystemData struct {
-	Processes []ProcessMetaData
-	Registry  RegistryMetaData
-	Services  []ServiceMetaData
-	Drivers   []DriverMetaData
+	Processes   []ProcessMetaData
+	Registry    RegistryMetaData
+	Services    []ServiceMetaData
+	Drivers     []DriverMetaData
+	AVProviders []AVWmiMetaData
 }
 
 // CountMatchesAll collects all the scanned matches of suspicious names and checks for passed keywords in the matches.
@@ -27,6 +28,10 @@ func (s *SystemData) CountMatchesAll(keywords ...[]string) (int, bool) {
 	}
 
 	for _, v := range s.Drivers {
+		scanMatchList = append(scanMatchList, v.ScanMatch...)
+	}
+
+	for _, v := range s.AVProviders {
 		scanMatchList = append(scanMatchList, v.ScanMatch...)
 	}
 

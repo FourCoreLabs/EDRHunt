@@ -16,8 +16,9 @@ var (
 	processes    bool
 	services     bool
 	registry     bool
+	avwmi        bool
 	all          bool
-	versionStr   string = "1.3.1"
+	versionStr   string = "1.4.0"
 	versionCheck bool
 )
 
@@ -46,7 +47,8 @@ func edrCommand(cmd *cobra.Command, args []string) {
 		drivers = true
 		services = true
 		registry = true
-		fmt.Println("Scanning processes, services, drivers, and registry...")
+		avwmi = true
+		fmt.Println("Scanning processes, services, drivers, wmi, and registry...")
 	}
 
 	if processes {
@@ -65,6 +67,12 @@ func edrCommand(cmd *cobra.Command, args []string) {
 		fmt.Println("[SERVICES]")
 		summary, _ := edrRecon.CheckServices()
 		printServices(summary)
+		fmt.Println()
+	}
+	if avwmi {
+		fmt.Println("[WMI-REPO]")
+		summary, _ := edrRecon.CheckAVWmiRepo()
+		printAVWmi(summary)
 		fmt.Println()
 	}
 	if registry {
@@ -100,7 +108,7 @@ func allCommand(cmd *cobra.Command, args []string) {
 var rootCmd = &cobra.Command{
 	Use:   "EDRHunt",
 	Short: "scans EDR/AV",
-	Long:  `EDRHunt scans and finds the installed EDR/AV by scanning services, processes, registry, and drivers.`,
+	Long:  `EDRHunt scans and finds the installed EDR/AV by scanning services, processes, registry, wmi, and drivers.`,
 	Run:   edrCommand,
 }
 
@@ -123,6 +131,20 @@ var allCmd = &cobra.Command{
 	Short: "scan installed edrs",
 	Long:  `scan edrs and show system data`,
 	Run:   allCommand,
+}
+
+func printAVWmi(summary []resources.AVWmiMetaData) {
+	for _, antivirus := range summary {
+		fmt.Printf("Suspicious Product Name: %s\n", antivirus.ProductName)
+		fmt.Printf("Suspicious Product GUID: %s\n", antivirus.ProductGUID)
+		fmt.Printf("Path to Suspicious Product Exe: %s\n", antivirus.PathToProductExe)
+		fmt.Printf("Suspicious Product Exe Metadata: \t%s\n", edrRecon.FileMetaDataParser(antivirus.ProductExeMetaData))
+		fmt.Printf("Path to Suspicious Reporting Exe: %s\n", antivirus.PathToReportingExe)
+		fmt.Printf("Suspicious Reporting Exe Metadata: \t%s\n", edrRecon.FileMetaDataParser(antivirus.ReportingExeMetaData))
+		fmt.Printf("Suspicious Product State: %d\n", antivirus.ProductState)
+		fmt.Printf("Matched Keyword: %s\n", antivirus.ScanMatch)
+		fmt.Println()
+	}
 }
 
 func printProcess(summary []resources.ProcessMetaData) {
@@ -184,6 +206,7 @@ func init() {
 	rootCmd.PersistentFlags().BoolVarP(&processes, "processes", "p", processes, "Scan installed processes")
 	rootCmd.PersistentFlags().BoolVarP(&services, "services", "s", services, "Scan installed services")
 	rootCmd.PersistentFlags().BoolVarP(&registry, "registry", "r", registry, "Scan installed registry")
+	rootCmd.PersistentFlags().BoolVarP(&avwmi, "avwmi", "w", avwmi, "Scan installed AntiVirus Providers")
 	rootCmd.PersistentFlags().BoolVarP(&versionCheck, "version", "v", versionCheck, "Output version information and exit")
 
 	rootCmd.AddCommand(versionCmd)
