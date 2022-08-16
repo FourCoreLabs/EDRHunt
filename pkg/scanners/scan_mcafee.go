@@ -14,6 +14,8 @@ func (w *McafeeDetection) Type() resources.EDRType {
 
 var McafeeHeuristic = []string{
 	"Mcafee\\",
+	"mcupdate.exe",
+	"ProtectedModuleHost.exe",
 	"McAfeeAgent\\",
 	"APPolicyName",
 	"EPPolicyName",

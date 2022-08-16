@@ -55,6 +55,16 @@ func TestCheckProcesses(t *testing.T) {
 	}
 }
 
+func TestCheckAVWMI(t *testing.T) {
+	summary, _ := CheckAVWmiRepo()
+	for _, av := range summary {
+		fmt.Println(av)
+	}
+	// if err.Error() != "" {
+	// 	fmt.Println("error", err)
+	// }
+}
+
 func TestGetFileMetaData(t *testing.T) {
 	fileMetaData, err := GetFileMetaData(`C:\Users\hardi\AnyDesk.exe`)
 	if err != nil {

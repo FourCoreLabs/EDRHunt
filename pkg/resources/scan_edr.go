@@ -19,4 +19,7 @@ var (
 	SentinelOneEDR  EDRType = "sentinel_one"
 	FireEyeEDR      EDRType = "fireeye"
 	ElasticAgentEDR EDRType = "elastic_agent"
+	QualysEDR       EDRType = "qualys"
+	TrendMicroEDR   EDRType = "trend_micro"
+	ESETEDR         EDRType = "eset"
 )

@@ -289,6 +289,15 @@ var EdrList = []string{
 	"elastic-endpoint.exe",
 	"elastic-endpoint-driver",
 	"ElasticEndpoint",
+	"ecmd.exe",
+	"ekrn.exe",
+	"ESET",
+	"mcupdate.exe",
+	"ProtectedModuleHost.exe",
+	"dsa.exe",
+	"Notifier.exe",
+	"qualys",
+	"qualysagent.exe",
 }
 
 var ReconList = []string{

@@ -2,7 +2,7 @@
 
 [![goreleaser](https://github.com/FourCoreLabs/EDRHunt/actions/workflows/goreleaser.yml/badge.svg)](https://github.com/FourCoreLabs/EDRHunt/actions/workflows/goreleaser.yml)
 
-EDRHunt scans Windows services, drivers, processes, registry for installed EDRs (Endpoint Detection And Response). Read more about EDRHunt [here](https://www.fourcore.vision/blogs/red-team-adventure-windows-endpoints-edr-edrhunt).
+EDRHunt scans Windows services, drivers, processes, registry, wmi for installed EDRs (Endpoint Detection And Response). Read more about EDRHunt [here](https://www.fourcore.vision/blogs/red-team-adventure-windows-endpoints-edr-edrhunt).
 
 [![asciicast](https://asciinema.org/a/P8i99w9mI497qUPTNbdwYWcwQ.svg)](https://asciinema.org/a/P8i99w9mI497qUPTNbdwYWcwQ)
 
@@ -30,7 +30,7 @@ Detected EDR: Kaspersky Security
 ```
 $ .\EDRHunt.exe all
 Running in user mode, escalate to admin for more details.
-Scanning processes, services, drivers, and registry...
+Scanning processes, services, drivers, wmi, and registry...
 [PROCESSES]
 
 Suspicious Process Name: MsMpEng.exe
@@ -131,6 +131,13 @@ $ .\EDRHunt.exe -d
 $ .\EDRHunt.exe -r
 ```
 
+
+- Find WMI Repository keys matching EDR keywords
+
+```
+$ .\EDRHunt.exe -w
+```
+
 ## Detections
 
 EDR Detections Currently Available
@@ -145,6 +152,9 @@ EDR Detections Currently Available
 - SentinelOne
 - FireEye
 - Elastic EDR
+- Qualys EDR
+- Trend Micro EDR
+- ESET EDR
 
 More to be added soon.
 

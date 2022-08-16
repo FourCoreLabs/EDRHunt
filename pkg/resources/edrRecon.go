@@ -5,6 +5,7 @@ type Recon interface {
 	CheckServices() ([]ServiceMetaData, error)
 	CheckDrivers() ([]DriverMetaData, error)
 	CheckRegistry() (RegistryMetaData, error)
+	CheckAVWmiRepo() ([]AVWmiMetaData, error)
 	CheckDirectory() (string, error)
 }
 
@@ -30,6 +31,17 @@ type ServiceMetaData struct {
 	ServiceProcessId   string
 	ServiceExeMetaData FileMetaData
 	ScanMatch          []string
+}
+
+type AVWmiMetaData struct {
+	ProductName          string
+	ProductGUID          string
+	PathToProductExe     string
+	ProductExeMetaData   FileMetaData
+	PathToReportingExe   string
+	ReportingExeMetaData FileMetaData
+	ProductState         uint32
+	ScanMatch            []string
 }
 
 type ProcessMetaData struct {
