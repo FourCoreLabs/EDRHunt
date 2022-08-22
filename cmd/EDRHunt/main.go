@@ -18,7 +18,7 @@ var (
 	registry     bool
 	avwmi        bool
 	all          bool
-	versionStr   string = "1.4.0"
+	versionStr   string = "1.4.2"
 	versionCheck bool
 )
 
