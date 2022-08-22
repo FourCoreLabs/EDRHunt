@@ -14,9 +14,9 @@ func (w *QualysDetection) Type() resources.EDRType {
 
 var QualysHeuristic = []string{
 	"Qualys",
-	"QualysAgent.exe",
 	"qualysagent.exe",
-	"qualys",
+	"QualysProxy.exe",
+	"QualysAgentUI.exe",
 }
 
 func (w *QualysDetection) Detect(data resources.SystemData) (resources.EDRType, bool) {

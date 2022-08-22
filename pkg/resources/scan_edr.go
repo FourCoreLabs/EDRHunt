@@ -22,4 +22,12 @@ var (
 	QualysEDR       EDRType = "qualys"
 	TrendMicroEDR   EDRType = "trend_micro"
 	ESETEDR         EDRType = "eset"
+	CybereasonEDR   EDRType = "cybereason"
+	BitDefenderEDR  EDRType = "bitdefender"
+	CheckPointEDR   EDRType = "checkpoint"
+	CynetEDR        EDRType = "cynet"
+	DeepInstinctEDR EDRType = "deepinstinct"
+	SophosEDR       EDRType = "sophos"
+	FortinetEDR     EDRType = "fortinet"
+	MalwareBytesEDR EDRType = "malwarebytes"
 )

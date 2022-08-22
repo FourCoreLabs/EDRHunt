@@ -17,5 +17,13 @@ var (
 		&ESETEDRDetection{},
 		&QualysDetection{},
 		&TrendMicroDetection{},
+		&CybereasonDetection{},
+		&BitDefenderDetection{},
+		&CheckPointDetection{},
+		&CynetDetection{},
+		&DeepInstictDetection{},
+		&SophosDetection{},
+		&FortinetDetection{},
+		&MalwareBytesDetection{},
 	}
 )
