@@ -13,8 +13,7 @@ func (w *ElasticAgentDetection) Type() resources.EDRType {
 }
 
 var ElasticAgentHeuristic = []string{
-	"Elastic Endpoint Security",
-	"Elastic Agent",
+	"Elastic",
 	"elastic-agent.exe",
 	"elastic-endpoint.exe",
 	"elastic-endpoint-driver",

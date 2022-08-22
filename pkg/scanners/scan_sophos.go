@@ -1,0 +1,130 @@
+package scanners
+
+import "github.com/FourCoreLabs/EDRHunt/pkg/resources"
+
+type SophosDetection struct{}
+
+func (w *SophosDetection) Name() string {
+	return "Sophos"
+}
+
+func (w *SophosDetection) Type() resources.EDRType {
+	return resources.SophosEDR
+}
+
+var SophosHeuristic = []string{
+	"Sophos",
+	"C:\\Program Files\\Sophos\\Sophos Virus Removal Tool\\",
+	"SVRTgui.exe",
+	"SVRTcli.exe",
+	"ResEnu.dll",
+	"Sophos Virus Removal Tool install.exe",
+	"SVRTcli.exe",
+	"SVRTgui.exe",
+	"SCTCleanupService.exe",
+	"SUL.dll",
+	"SVRTservice.exe",
+	"native.exe",
+	"osdp.dll",
+	"SAVI.dll",
+	"veex.dll",
+	"rkdisk.dll",
+	"SCTBootTasks.exe",
+	"ALMon.exe",
+	"SAA.exe",
+	"SUMService.exe",
+	"SVRTservice.exe",
+	"ssp.exe",
+	"SCFService.exe",
+	"SCFManager.exe",
+	"spa.exe",
+	"SpaRmsAdapter.dll",
+	"cabarc.exe",
+	"sargui.exe",
+	"Sophos Computer Security Scan.exe",
+	"sntpservice.exe",
+	"C:\\Program Files\\sophos\\management communications system\\endpoint",
+	"SophosLinkIconHandler32.dll",
+	"McsClient.exe",
+	"McsAgent.exe",
+	"McsHeartbeat.exe",
+	"SAVAdminService.exe",
+	"conan.dll",
+	"sav32cli.exe",
+	"DCManagement.dll",
+	"DesktopMessaging.dll",
+	"DetectionFeedback.dll",
+	"DeviceControlPlugin.dll",
+	"DriveProcessor.dll",
+	"EEConsumer.dll",
+	"ForceUpdateAlongSideSGN.exe",
+	"FSDecomposer.dll",
+	"ICAdapter.dll",
+	"ICManagement.dll",
+	"ICProcessors.dll",
+	"osdp.dll",
+	"SavAdapter.dll",
+	"SAVAdminService.exe",
+	"SAVCleanupService.exe",
+	"SAVControl.dll",
+	"SAVI.dll",
+	"SavMain.exe",
+	"savmscm.dll",
+	"SavNeutralRes.dll",
+	"SavPlugin.dll",
+	"SavProgress.exe",
+	"SavProxy.exe",
+	"SavRes.dll",
+	"SavResChs.dll",
+	"SavResCht.dll",
+	"SavResDeu.dll",
+	"SavResEng.dll",
+	"SavResEsp.dll",
+	"SavSecurity.dll",
+	"SavService.exe",
+	"SavShellExt.dll",
+	"SavShellExtX64.dll",
+	"bpaif.dll",
+	"swc_service.exe",
+	"swcadapter.dll",
+	"swi_callout.sys",
+	"swi_di.exe",
+	"swi_service.exe",
+	"swc_service.exe",
+	"swi_filter.exe",
+	"ALUpdate.exe",
+	"SophosUpdate.exe",
+	"SUL.dll",
+	"ALMon.exe",
+	"ALMsg.dll",
+	"ALsvc.exe",
+	"ALUpdate.exe",
+	"AUAdapter.dll",
+	"ChannelUpdater.dll",
+	"cidsync.dll",
+	"config.dll",
+	"crypto.dll",
+	"EECustomActions.dll",
+	"inetconn.dll",
+	"InstlMgr.dll",
+	"ispsheet.dll",
+	"SAUConfigDLL.dll",
+	"SingleGUIPlugin.dll",
+	"SophosAlert.exe",
+	"swlocale.dll",
+	"SavShellExt.dll",
+	"SavShellExtX64.dll",
+	"SavMain.exe",
+	"SAVAdminService.exe",
+	"SAVCleanupService.exe",
+	"SavService.exe",
+}
+
+func (w *SophosDetection) Detect(data resources.SystemData) (resources.EDRType, bool) {
+	_, ok := data.CountMatchesAll(SophosHeuristic)
+	if !ok {
+		return "", false
+	}
+
+	return resources.SophosEDR, true
+}

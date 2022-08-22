@@ -16,6 +16,9 @@ var SentinelOneHeuristic = []string{
 	"SentinelOne\\",
 	"CbDefense\\",
 	"SensorVersion",
+	"C:\\Program Files\\SentinelOne",
+	"SentinelAgent",
+	"SentinelMonitor",
 }
 
 func (w *SentinelOneDetection) Detect(data resources.SystemData) (resources.EDRType, bool) {

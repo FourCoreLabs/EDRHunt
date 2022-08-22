@@ -155,6 +155,14 @@ EDR Detections Currently Available
 - Qualys EDR
 - Trend Micro EDR
 - ESET EDR
+- Cybereason EDR
+- BitDefender EDR
+- Checkpoint EDR
+- Cynet EDR
+- DeepInstinct EDR
+- Sophos EDR
+- Fortinet EDR
+- MalwareBytes EDR
 
 More to be added soon.
 

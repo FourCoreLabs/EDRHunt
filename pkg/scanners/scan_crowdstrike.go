@@ -16,6 +16,13 @@ var CrowdstrikeHeuristic = []string{
 	"CrowdStrike",
 	"%SYSTEMROOT%\\system32\\drivers\\crowdstrike\\CsDeviceControl.inf",
 	"%SYSTEMROOT%\\system32\\drivers\\crowdstrike\\CsFirmwareAnalysis.inf",
+	"windowssensor.x64.exe",
+	"C:\\Windows\\System32\\drivers\\crowdstrike",
+	"csagent.sys",
+	"csim.sys",
+	"csimn.sys",
+	"csimu.sys",
+	"imbs.sys",
 }
 
 func (w *CrowdstrikeDetection) Detect(data resources.SystemData) (resources.EDRType, bool) {

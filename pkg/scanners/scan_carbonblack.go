@@ -16,6 +16,7 @@ var CarbonBlackHeuristic = []string{
 	"CarbonBlack\\",
 	"CbDefense\\",
 	"SensorVersion",
+	"CarbonBlackClientSetup.exe",
 }
 
 func (w *CarbonBlackDetection) Detect(data resources.SystemData) (resources.EDRType, bool) {
