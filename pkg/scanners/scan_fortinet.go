@@ -14,7 +14,6 @@ func (w *FortinetDetection) Type() resources.EDRType {
 
 var FortinetHeuristic = []string{
 	"Fortinet",
-	"collectoragent.exe",
 	"dcagent.dll",
 	"dcagent_amd64.dll",
 	"FSAEConfig.exe",
@@ -23,9 +22,7 @@ var FortinetHeuristic = []string{
 	"mdare.dll",
 	"fccomintdll.dll",
 	"fcoeam.dll",
-	"fmon.exe ",
 	"fwutil.dll",
-	"rmon.exe",
 	"fccomint.exe",
 	"fclanguageselector.exe",
 	"fortifw.exe",
@@ -78,7 +75,6 @@ var FortinetHeuristic = []string{
 	"npccplugin.dll",
 	"FCCOMIntDLL.dll",
 	"FCOEAM.dll",
-	"fmon.exe",
 	"FSSOMA.exe",
 	"LaunchCacheClean.dll",
 	"launchcacheclean64.dll",
@@ -112,7 +108,6 @@ var FortinetHeuristic = []string{
 	"FortiClient_Diagnostic_Tool.exe",
 	"forticontrol.dll",
 	"FortiSSLVPNdaemon.exe",
-	"sslvpnlib.dll",
 	"utilsdll.dll",
 	"FCAuth.exe",
 	"FortiCliSh.dll",
