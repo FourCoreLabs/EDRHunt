@@ -30,4 +30,5 @@ var (
 	SophosEDR       EDRType = "sophos"
 	FortinetEDR     EDRType = "fortinet"
 	MalwareBytesEDR EDRType = "malwarebytes"
+	LimacharlieEDR  EDRType = "limacharlie"
 )
