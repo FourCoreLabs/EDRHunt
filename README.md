@@ -163,6 +163,7 @@ EDR Detections Currently Available
 - Sophos EDR
 - Fortinet EDR
 - MalwareBytes EDR
+- LimaCharlie EDR
 
 More to be added soon.
 
