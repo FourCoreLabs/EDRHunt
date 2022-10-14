@@ -869,6 +869,10 @@ var EdrList = []string{
 	"Notifier.exe",
 	"qualys",
 	"qualysagent.exe",
+	"rphcp.exe",
+	"lc_sensor.exe",
+	"refractionPOINT HCP",
+	"LimaCharlie",
 }
 
 var ReconList = []string{

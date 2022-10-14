@@ -5,7 +5,7 @@ import "github.com/FourCoreLabs/EDRHunt/pkg/resources"
 type LimacharlieDetection struct{}
 
 func (w *LimacharlieDetection) Name() string {
-	return "Limacharlie EDR"
+	return "Limacharlie Agent"
 }
 
 func (w *LimacharlieDetection) Type() resources.EDRType {
@@ -13,6 +13,7 @@ func (w *LimacharlieDetection) Type() resources.EDRType {
 }
 
 var LimacharlieHeuristic = []string{
+	"rphcp.exe",
 	"lc_sensor.exe",
 	"refractionPOINT HCP",
 	"LimaCharlie",
