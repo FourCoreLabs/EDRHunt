@@ -15,7 +15,6 @@ func (w *CheckPointDetection) Type() resources.EDRType {
 var CheckPointHeuristic = []string{
 	"Checkpoint",
 	"tracsrvwrapper.exe",
-	"C:\\Program Files\\checkpoint\\endpoint connect\\tracsrvwrapper.exe",
 	"TrGUI.exe",
 	"TracCAPI.exe",
 	"dtplat.dll",
@@ -32,7 +31,6 @@ var CheckPointHeuristic = []string{
 	"cpmsi_tool.exe",
 	"DataStruct.dll",
 	"FileHash_DYN.dll",
-	"trac.exe",
 	"TrAPI.dll",
 	"vna_coinstall.dll - vna",
 	"vna_install64.exe",
@@ -40,8 +38,6 @@ var CheckPointHeuristic = []string{
 	"TracSrvWrapper.exe",
 	"TrGUI.exe",
 	"TracSrvWrapper.exe",
-	"vsmon.exe",
-	"C:\\Program Files\\CheckPoint\\ZoneAlarm\\vsmon.exe",
 	"TrueVector",
 	"p95tray.exe",
 }

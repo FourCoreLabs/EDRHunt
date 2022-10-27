@@ -13,10 +13,7 @@ func (w *CylanceDetection) Type() resources.EDRType {
 }
 
 var CylanceHeuristic = []string{
-	"Cylance\\",
-	"Cylance0",
-	"Cylance1",
-	"Cylance2",
+	"Cylance",
 	"CylanceProtectSetup.exe",
 	"cylancesvc.exe",
 	"CylanceUI.exe",

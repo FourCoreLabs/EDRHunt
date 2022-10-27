@@ -22,7 +22,6 @@ var CrowdstrikeHeuristic = []string{
 	"csim.sys",
 	"csimn.sys",
 	"csimu.sys",
-	"imbs.sys",
 }
 
 func (w *CrowdstrikeDetection) Detect(data resources.SystemData) (resources.EDRType, bool) {

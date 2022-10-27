@@ -19,7 +19,6 @@ var CybereasonHeuristic = []string{
 	"CrAmTray.exe",
 	"Cybereason",
 	"crsdll.dll",
-	"ap.dll",
 	"CoreMinion.dll",
 	"CoreMinion",
 	"minionhost.exe",
