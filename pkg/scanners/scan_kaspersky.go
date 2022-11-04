@@ -14,12 +14,9 @@ func (w *KaskperskyDetection) Type() resources.EDRType {
 
 var KasperskyHeuristic = []string{
 	"kaspersky",
-	"avp.exe",
 	"avpui.exe",
 	"avpservice.dll",
-	"avpui.exe",
 	"avzkrnl.dll",
-	"cbi.dll",
 	"cf_anti_malware_facade.dll",
 	"cf_facade.dll",
 	"cf_mgmt_facade.dll",
@@ -42,7 +39,6 @@ var KasperskyHeuristic = []string{
 	"klnsacwsrv.exe",
 	"klnagent.exe",
 	"kl_platf.exe",
-	"stpass.exe",
 	"klnagwds.exe",
 }
 

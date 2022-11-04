@@ -13,15 +13,10 @@ func (w *TrendMicroDetection) Type() resources.EDRType {
 }
 
 var TrendMicroHeuristic = []string{
-	"Deep Security Agent\\",
-	"dsa",
-	"Notifier",
 	"Trend Micro",
-	"ntrmv.exe",
 	"pccntmon.exe",
 	"AosUImanager.exe",
 	"NTRTScan.exe",
-	"AddinSentry.exe ",
 	"tmaseng.dll",
 	"TMAS_OL.exe",
 	"TMAS_OLA.dll",
