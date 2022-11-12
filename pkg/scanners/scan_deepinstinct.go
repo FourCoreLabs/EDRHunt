@@ -13,10 +13,7 @@ func (w *DeepInstictDetection) Type() resources.EDRType {
 }
 
 var DeepInstinctHeuristic = []string{
-	"DeepInstinct",
-	"Deep Instinct Agent",
-	"Deep Instinct Prevention Platform",
-	"HKEY_LOCAL_MACHINE\\SOFTWARE\\Deep Instinct",
+	"Deep Instinct",
 }
 
 func (w *DeepInstictDetection) Detect(data resources.SystemData) (resources.EDRType, bool) {

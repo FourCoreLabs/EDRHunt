@@ -15,15 +15,6 @@ func (w *CybereasonDetection) Type() resources.EDRType {
 var CybereasonHeuristic = []string{
 	"CybereasonRansomFreeServiceHost.exe",
 	"Cybereason",
-	"Cybereason ActiveProbe\\",
-	"CrAmTray.exe",
-	"Cybereason",
-	"crsdll.dll",
-	"CoreMinion.dll",
-	"CoreMinion",
-	"minionhost.exe",
-	"Cybereason Sensor",
-	"CybereasonSensor.exe",
 }
 
 func (w *CybereasonDetection) Detect(data resources.SystemData) (resources.EDRType, bool) {

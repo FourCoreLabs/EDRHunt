@@ -14,8 +14,6 @@ func (w *CynetDetection) Type() resources.EDRType {
 
 var CynetHeuristic = []string{
 	"Cynet",
-	"Cyops",
-	"Cynet EPS",
 }
 
 func (w *CynetDetection) Detect(data resources.SystemData) (resources.EDRType, bool) {

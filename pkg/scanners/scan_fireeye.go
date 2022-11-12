@@ -14,8 +14,6 @@ func (w *FireEyeDetection) Type() resources.EDRType {
 
 var FireEyeHeuristic = []string{
 	"FireEye",
-	"C:\\Program Files\\FireEye\\xagt\\",
-	"xagt.exe",
 }
 
 func (w *FireEyeDetection) Detect(data resources.SystemData) (resources.EDRType, bool) {

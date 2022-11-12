@@ -14,25 +14,13 @@ func (w *TrendMicroDetection) Type() resources.EDRType {
 
 var TrendMicroHeuristic = []string{
 	"Trend Micro",
-	"pccntmon.exe",
 	"AosUImanager.exe",
-	"NTRTScan.exe",
 	"tmaseng.dll",
 	"TMAS_OL.exe",
 	"TMAS_OLA.dll",
 	"TMAS_OLImp.exe",
 	"TMAS_OLShare.dll",
-	"EMapiWpr.dll",
 	"TMAS_OLSentry.exe",
-	"ufnavi.exe",
-	"Clnrbin.exe",
-	"vizorhtmldialog.exe",
-	"pwmConsole.exe",
-	"PwmSvc.exe",
-	"coreServiceShell.exe",
-	"ds_agent.exe",
-	"ufnavi.exe",
-	"SfCtlCom.exe",
 }
 
 func (w *TrendMicroDetection) Detect(data resources.SystemData) (resources.EDRType, bool) {
