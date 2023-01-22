@@ -13,7 +13,6 @@ func (w *ESETEDRDetection) Type() resources.EDRType {
 }
 
 var ESETHeuristic = []string{
-	"ESET",
 	"egui.exe",
 	"ekrn.exe",
 	"minodlogin.exe",
