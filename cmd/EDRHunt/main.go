@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/FourCoreLabs/EDRHunt/pkg/edrRecon"
-	"github.com/FourCoreLabs/EDRHunt/pkg/resources"
-	"github.com/FourCoreLabs/EDRHunt/pkg/scanners"
+	"github.com/fourcorelabs/edrhunt/pkg/edrRecon"
+	"github.com/fourcorelabs/edrhunt/pkg/resources"
+	"github.com/fourcorelabs/edrhunt/pkg/scanners"
 	"github.com/spf13/cobra"
 )
 

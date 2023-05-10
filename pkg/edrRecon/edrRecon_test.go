@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/FourCoreLabs/EDRHunt/pkg/scanners"
+	"github.com/fourcorelabs/edrhunt/pkg/scanners"
 )
 
 func TestCheckDrivers(t *testing.T) {

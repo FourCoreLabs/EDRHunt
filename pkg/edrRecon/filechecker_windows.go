@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/FourCoreLabs/EDRHunt/pkg/resources"
 	"github.com/bi-zone/go-fileversion"
+	"github.com/fourcorelabs/edrhunt/pkg/resources"
 )
 
 var (

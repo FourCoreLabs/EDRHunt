@@ -1,7 +1,7 @@
 package resources
 
 import (
-	"github.com/FourCoreLabs/EDRHunt/pkg/util"
+	"github.com/fourcorelabs/edrhunt/pkg/util"
 )
 
 type SystemData struct {

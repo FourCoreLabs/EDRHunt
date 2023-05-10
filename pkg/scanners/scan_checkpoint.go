@@ -1,6 +1,6 @@
 package scanners
 
-import "github.com/FourCoreLabs/EDRHunt/pkg/resources"
+import "github.com/fourcorelabs/edrhunt/pkg/resources"
 
 type CheckPointDetection struct{}
 

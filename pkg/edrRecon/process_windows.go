@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/FourCoreLabs/EDRHunt/pkg/resources"
+	"github.com/fourcorelabs/edrhunt/pkg/resources"
 	"github.com/hashicorp/go-multierror"
 	"github.com/yusufpapurcu/wmi"
 )

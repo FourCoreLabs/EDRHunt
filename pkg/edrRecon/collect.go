@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/FourCoreLabs/EDRHunt/pkg/resources"
+	"github.com/fourcorelabs/edrhunt/pkg/resources"
 )
 
 // GetSystemData collects the parsed list of processes, services, drivers, wmi and registry keys to be used for EDR heuristics.

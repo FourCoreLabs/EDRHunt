@@ -8,7 +8,7 @@ import (
 	"unicode/utf16"
 	"unsafe"
 
-	"github.com/FourCoreLabs/EDRHunt/pkg/resources"
+	"github.com/fourcorelabs/edrhunt/pkg/resources"
 
 	"github.com/hashicorp/go-multierror"
 )

@@ -1,6 +1,6 @@
 # EDRHunt
 
-[![goreleaser](https://github.com/FourCoreLabs/EDRHunt/actions/workflows/goreleaser.yml/badge.svg)](https://github.com/FourCoreLabs/EDRHunt/actions/workflows/goreleaser.yml)
+[![goreleaser](https://github.com/fourcorelabs/edrhunt/actions/workflows/goreleaser.yml/badge.svg)](https://github.com/fourcorelabs/edrhunt/actions/workflows/goreleaser.yml)
 
 EDRHunt scans Windows services, drivers, processes, registry, wmi for installed EDRs (Endpoint Detection And Response). Read more about EDRHunt [here](https://www.fourcore.vision/blogs/red-team-adventure-windows-endpoints-edr-edrhunt).
 
@@ -13,7 +13,7 @@ EDRHunt scans Windows services, drivers, processes, registry, wmi for installed 
 
 - Go
   - Requires Go to be installed on system. Tested on Go1.17+.
-  - `go install github.com/FourCoreLabs/EDRHunt/cmd/EDRHunt@master`
+  - `go install github.com/fourcorelabs/edrhunt/cmd/EDRHunt@master`
 
 ## Usage
 

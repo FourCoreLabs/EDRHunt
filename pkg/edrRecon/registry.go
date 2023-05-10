@@ -8,7 +8,7 @@ import (
 	"sync"
 	"syscall"
 
-	"github.com/FourCoreLabs/EDRHunt/pkg/resources"
+	"github.com/fourcorelabs/edrhunt/pkg/resources"
 )
 
 var (
