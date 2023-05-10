@@ -1,4 +1,4 @@
-module github.com/FourCoreLabs/EDRHunt
+module github.com/fourcorelabs/edrhunt
 
 go 1.19
 
