@@ -18,7 +18,7 @@ var (
 	registry     bool
 	avwmi        bool
 	all          bool
-	versionStr   string = "1.4.2"
+	versionStr   string = "1.4.6"
 	versionCheck bool
 )
 
@@ -46,7 +46,7 @@ func edrCommand(cmd *cobra.Command, args []string) {
 		processes = true
 		drivers = true
 		services = true
-		registry = true
+		registry = false
 		avwmi = true
 		fmt.Println("Scanning processes, services, drivers, wmi, and registry...")
 	}

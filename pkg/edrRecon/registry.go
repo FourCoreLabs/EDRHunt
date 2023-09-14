@@ -2,7 +2,6 @@ package edrRecon
 
 import (
 	"context"
-	"fmt"
 	"os/exec"
 	"strings"
 	"sync"
@@ -68,22 +67,23 @@ func EnumRegistry(ctx context.Context) []string {
 
 func CheckRegistry(ctx context.Context) (resources.RegistryMetaData, error) {
 	var analysis resources.RegistryMetaData = resources.RegistryMetaData{ScanMatch: make([]string, 0)}
-
-	output := strings.Join(EnumRegistry(ctx), " ")
-	if output != "" {
-		processedOutput := strings.ToLower(output)
-		for _, match := range RegistryReconList {
-			if strings.Contains(
-				processedOutput,
-				strings.ToLower(match)) {
-				analysis.ScanMatch = append(analysis.ScanMatch, match)
-			}
-		}
-	}
-
-	if len(analysis.ScanMatch) == 0 {
-		return analysis, fmt.Errorf("nothing found in registry")
-	}
-
 	return analysis, nil
+
+	// output := strings.Join(EnumRegistry(ctx), " ")
+	// if output != "" {
+	// 	processedOutput := strings.ToLower(output)
+	// 	for _, match := range RegistryReconList {
+	// 		if strings.Contains(
+	// 			processedOutput,
+	// 			strings.ToLower(match)) {
+	// 			analysis.ScanMatch = append(analysis.ScanMatch, match)
+	// 		}
+	// 	}
+	// }
+
+	// if len(analysis.ScanMatch) == 0 {
+	// 	return analysis, fmt.Errorf("nothing found in registry")
+	// }
+
+	// return analysis, nil
 }
