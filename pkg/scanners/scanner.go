@@ -8,6 +8,7 @@ var (
 		&CrowdstrikeDetection{},
 		&CylanceDetection{},
 		&FireEyeDetection{},
+		&HarfangLabDetection{},
 		&KaskperskyDetection{},
 		&McafeeDetection{},
 		&SymantecDetection{},
