@@ -25,7 +25,6 @@ var HarfangLabHeuristic = []string{
 	"hurukai-ui.exe",
 	"hurukai-av.dll",
 	"hlelam.sys",
-	"winpmem.sys",
 	"hlprotect.sys",
 }
 
