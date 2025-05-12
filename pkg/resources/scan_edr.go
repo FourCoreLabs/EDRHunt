@@ -31,4 +31,5 @@ var (
 	FortinetEDR     EDRType = "fortinet"
 	MalwareBytesEDR EDRType = "malwarebytes"
 	LimacharlieEDR  EDRType = "limacharlie"
+	HarfangLabEDR   EDRType = "harfanglab"
 )
