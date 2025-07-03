@@ -6,7 +6,7 @@ builds:
       - amd64
     ldflags:
       - ""
-    gobinary: "garble-literals"
+    # gobinary: "garble-literals"
     main: cmd/EDRHunt/main.go
 archives:
   - format: zip
