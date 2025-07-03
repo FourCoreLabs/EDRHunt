@@ -873,6 +873,19 @@ var EdrList = []string{
 	"lc_sensor.exe",
 	"refractionPOINT HCP",
 	"LimaCharlie",
+	"HarfangLab\\",
+	"C:\\Program Files\\HarfangLab",
+	"C:\\Program Files\\HarfangLab\\drivers",
+	"hurukai",
+	"hurukai-av-update.dll",
+	"hldevicecontrol.sys",
+	"hurukai-av",
+	"hurukai-ui",
+	"hurukai-av.exe",
+	"hurukai-ui.exe",
+	"hurukai-av.dll",
+	"hlelam.sys",
+	"hlprotect.sys",
 }
 
 var ReconList = []string{
