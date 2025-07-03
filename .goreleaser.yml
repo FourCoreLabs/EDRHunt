@@ -5,7 +5,7 @@ builds:
     goarch:
       - amd64
     ldflags:
-      - ""
+      - "-s -w"
     # gobinary: "garble-literals"
     main: cmd/EDRHunt/main.go
 archives:
