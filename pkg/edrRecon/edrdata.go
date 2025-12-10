@@ -886,6 +886,8 @@ var EdrList = []string{
 	"hurukai-av.dll",
 	"hlelam.sys",
 	"hlprotect.sys",
+	"cyserver.exe",
+	"Cortex XDR",
 }
 
 var ReconList = []string{
