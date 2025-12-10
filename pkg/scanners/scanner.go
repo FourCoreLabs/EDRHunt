@@ -27,5 +27,6 @@ var (
 		&FortinetDetection{},
 		&MalwareBytesDetection{},
 		&LimacharlieDetection{},
+		&CortexXDRDetection{},
 	}
 )

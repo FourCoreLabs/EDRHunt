@@ -32,4 +32,5 @@ var (
 	MalwareBytesEDR EDRType = "malwarebytes"
 	LimacharlieEDR  EDRType = "limacharlie"
 	HarfangLabEDR   EDRType = "harfanglab"
+	CortexXDREDR    EDRType = "cortex_xdr"
 )
