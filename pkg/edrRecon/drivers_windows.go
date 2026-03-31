@@ -169,11 +169,25 @@ func GetDriverBaseName(driverAddrs uintptr) (string, error) {
 
 func IterateOverDrivers(numberOfDrivers uint, driverAddrs []uintptr) ([]resources.DriverMetaData, error) {
 	var (
-		multiErr error
-		summary  []resources.DriverMetaData = make([]resources.DriverMetaData, 0)
+		multiErr       error
+		summary        []resources.DriverMetaData = make([]resources.DriverMetaData, 0)
+		total                                     = len(driverAddrs)
+		nilCount       int
+		processedCount int
 	)
 
+	if total == 0 && numberOfDrivers > 0 {
+		total = int(numberOfDrivers)
+	}
+
 	for _, addr := range driverAddrs {
+		if addr == 0 {
+			nilCount++
+			continue
+		}
+
+		processedCount++
+
 		driverFileName, err := GetDriverFileName(addr)
 		if err != nil {
 			multiErr = multierror.Append(multiErr, err)
@@ -198,6 +212,10 @@ func IterateOverDrivers(numberOfDrivers uint, driverAddrs []uintptr) ([]resource
 		if len(output.ScanMatch) > 0 {
 			summary = append(summary, output)
 		}
+	}
+
+	if total > 0 && processedCount == 0 && nilCount == total {
+		return summary, errors.New("EnumDeviceDrivers returned only NULL addresses; SeDebugPrivilege likely not enabled")
 	}
 
 	return summary, multiErr
@@ -245,6 +263,8 @@ func CheckDrivers() ([]resources.DriverMetaData, error) {
 
 	numberOfDrivers = uint(sizeOfDriverArrayInBytes) / sizeOfOneDriverAddress
 	driverAddrs = make([]uintptr, numberOfDrivers)
+
+	_ = enableSeDebugPrivilegeIfRequired()
 
 	success := EnumDeviceDrivers(driverAddrs, DWORD(sizeOfDriverArrayInBytes), &sizeOfDriverArrayInBytes)
 	if !success {
