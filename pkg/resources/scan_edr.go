@@ -33,4 +33,5 @@ var (
 	LimacharlieEDR  EDRType = "limacharlie"
 	HarfangLabEDR   EDRType = "harfanglab"
 	CortexXDREDR    EDRType = "cortex_xdr"
+	AcronisEDR      EDRType = "acronis"
 )

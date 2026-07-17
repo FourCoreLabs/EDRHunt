@@ -28,5 +28,6 @@ var (
 		&MalwareBytesDetection{},
 		&LimacharlieDetection{},
 		&CortexXDRDetection{},
+		&AcronisDetection{},
 	}
 )

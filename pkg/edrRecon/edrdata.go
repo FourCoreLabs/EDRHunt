@@ -888,6 +888,16 @@ var EdrList = []string{
 	"hlprotect.sys",
 	"cyserver.exe",
 	"Cortex XDR",
+	"Acronis",
+	"cyber-protect-service.exe",
+	"aakore.exe",
+	"anti_ransomware_service.exe",
+	"AcronisCyberProtectionService",
+	"AcronisActiveProtectionService",
+	"C:\\Program Files\\Acronis",
+	"fltsrv.sys",
+	"snapman.sys",
+	"tdrpman.sys",
 }
 
 var ReconList = []string{
